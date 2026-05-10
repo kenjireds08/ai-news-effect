@@ -1,0 +1,100 @@
+name: Discord Post (新着記事の自動投稿)
+
+# discord-snippets/*.txt が新規追加されたら、Discord Webhook で自動投稿する。
+# 既存ファイルの編集は無視（再投稿防止）。
+#
+# 必要な GitHub Secrets:
+#   - DISCORD_AI_NEWS_WEBHOOK_URL: 投稿先 Discord Webhook URL
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'discord-snippets/**.txt'
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # 直前のコミットと比較するため
+
+      - name: Detect newly added snippets
+        id: changes
+        run: |
+          set -e
+          # 直前のコミットと比較して「新規追加(A)」された .txt を抽出
+          # 既存ファイルの編集(M)は無視
+          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'discord-snippets/*.txt' || true)
+          if [ -z "$NEW_FILES" ]; then
+            echo "新規スニペットなし（編集のみ or push 内容に該当なし）"
+          else
+            echo "新規スニペット検出:"
+            echo "$NEW_FILES"
+          fi
+          # 改行をカンマに変換して output に渡す
+          {
+            echo "files<<EOF"
+            echo "$NEW_FILES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post each snippet to Discord
+        if: steps.changes.outputs.files != ''
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_AI_NEWS_WEBHOOK_URL }}
+        run: |
+          set -e
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "❌ Secrets: DISCORD_AI_NEWS_WEBHOOK_URL が未設定です。"
+            exit 1
+          fi
+
+          # 改行区切りで処理
+          IFS=$'\n'
+          for file in ${{ steps.changes.outputs.files }}; do
+            [ -z "$file" ] && continue
+            [ ! -f "$file" ] && { echo "⚠️ ファイル消滅: $file"; continue; }
+
+            echo "📤 投稿中: $file"
+
+            # # で始まる行（コメント）を除去 + 前後の空行を整える
+            CONTENT=$(grep -v '^#' "$file" | sed -e '/./,$!d' | sed -e ':a' -e '/^\n*$/{$d;N;ba' -e '}')
+
+            # 文字数チェック (Discord 上限 2000)
+            LEN=${#CONTENT}
+            if [ "$LEN" -gt 2000 ]; then
+              echo "❌ $file: 2000 文字超過 ($LEN)。短縮してください。"
+              exit 1
+            fi
+            echo "   文字数: $LEN"
+
+            # JSON ペイロード作成
+            PAYLOAD=$(jq -n --arg content "$CONTENT" '{content: $content}')
+
+            # Webhook 投稿（HTTP ステータス確認）
+            HTTP_CODE=$(curl -sS -o /tmp/discord_response.json -w "%{http_code}" \
+              -X POST \
+              -H "Content-Type: application/json" \
+              -H "User-Agent: ai-news-effect-action" \
+              -d "$PAYLOAD" \
+              "$WEBHOOK_URL?wait=true")
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              MSG_ID=$(jq -r '.id // "unknown"' /tmp/discord_response.json)
+              echo "   ✅ 投稿完了 (message_id: $MSG_ID)"
+            else
+              echo "   ❌ HTTP $HTTP_CODE"
+              cat /tmp/discord_response.json
+              exit 1
+            fi
+
+            # 連続投稿防止（rate limit 回避）
+            sleep 2
+          done
+          echo ""
+          echo "✅ 全スニペット投稿完了"

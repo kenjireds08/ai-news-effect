@@ -1,0 +1,12 @@
+# Discord 投稿スニペット（第3記事: OpenAI 音声モデル）
+# このファイルは新規追加すると GitHub Actions が自動投稿します。
+# # で始まる行はコメントとして除去されます。
+
+# 📰 OpenAI、音声 AI の世代交代を発表。「話せて、考えて、ツール使える」3モデル登場
+
+> 元記事: https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api/
+> 発表元: OpenAI / 公開日: 2026-05-07
+
+OpenAI が Realtime API に **新音声モデル3種** を追加。一番のインパクトは、これまでの「話す → テキスト化 → 処理 → 音声化」というブツ切りが、**会話を切らずにツールを使い、考えながら応答する一体型** に変わったこと。Zillow・Vimeo・Priceline・Deutsche Telekom が既にテスト中。電話受付の自動化・多言語サポート・ライブ字幕などの新しい案件可能性が広がる。
+
+詳細はこちら 👉 https://ai-news-effect.pages.dev/posts/2026-05-10-openai-realtime-voice-models.html
