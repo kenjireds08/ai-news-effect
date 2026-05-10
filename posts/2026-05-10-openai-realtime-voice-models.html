@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OpenAI、音声 AI の世代交代を発表。「話せて、考えて、ツール使える」3モデル登場 | ai-news-effect</title>
+<meta name="description" content="OpenAI が Realtime API に新音声モデル3種を投入。GPT-Realtime-2 は GPT-5 クラスの推論を持ち、リアルタイム翻訳・音声認識も同時に発表。音声 AI が「会話できる相棒」レベルへ。">
+<meta property="og:title" content="OpenAI、音声 AI の世代交代を発表。「話せて、考えて、ツール使える」3モデル登場">
+<meta property="og:description" content="GPT-Realtime-2 / Translate / Whisper の3モデルが Realtime API で公開。会話を切らずにツール使い、70+ 言語をリアルタイム翻訳できる音声 AI 時代。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ai-news-effect.pages.dev/posts/2026-05-10-openai-realtime-voice-models.html">
+<meta property="og:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-10-openai-realtime-voice-models.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:site_name" content="ai-news-effect">
+<meta property="article:published_time" content="2026-05-10">
+<meta property="article:author" content="OpenAI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-10-openai-realtime-voice-models.png">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<main class="container">
+  <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
+
+  <span class="eyebrow">ニュース / 音声 AI</span>
+  <h1>OpenAI、音声 AI の世代交代を発表。<br>「話せて、考えて、ツール使える」3モデル登場</h1>
+
+  <div class="meta">
+    <strong style="background:none; font-weight:700;">元記事:</strong> <a href="https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api/" target="_blank" rel="noopener">openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api</a><br>
+    <strong style="background:none; font-weight:700;">発表元:</strong> OpenAI &nbsp;/&nbsp; <strong style="background:none; font-weight:700;">公開日:</strong> 2026-05-07
+  </div>
+
+  <p class="lead">
+    OpenAI が音声 AI の世代交代となる新モデル3種を Realtime API で公開した。一番のインパクトは、これまでの「話す → テキスト化 → 処理 → 音声化」というブツ切りの流れが、<strong>会話を続けながらツールを使い、考えながら応答する一体型に変わった</strong>こと。
+  </p>
+
+  <p class="lead">
+    Zillow、Vimeo、Priceline、Deutsche Telekom などが既に実装をテスト中。<strong>音声 AI は「便利な機能」から「会話できる相棒」のレベルへ進化した</strong>と言える発表内容。
+  </p>
+
+  <div class="hero-img-wrap">
+    <img src="/assets/images/2026-05-10-openai-realtime-voice-models.png" alt="OpenAI が発表した3つの新音声モデル（GPT-Realtime-2 / GPT-Realtime-Translate / GPT-Realtime-Whisper）の役割を示す手書き風インフォグラフィック" class="hero-img">
+  </div>
+
+  <h2>3つのモデル早見表</h2>
+
+  <p>今回発表されたモデルは3つ。それぞれ別の役割を持っている。</p>
+
+  <div class="compare-table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>モデル</th>
+        <th>何ができる</th>
+        <th>使う場面</th>
+        <th>価格</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GPT-Realtime-2</td>
+        <td><strong>推論できる音声 AI</strong>。GPT-5 クラスの知能で、会話しながらツールを使い、複雑な依頼をこなす</td>
+        <td>不動産検索アシスタント・旅行手配・カスタマーサポート</td>
+        <td>$32 / 1M input<br>$64 / 1M output</td>
+      </tr>
+      <tr>
+        <td>GPT-Realtime-Translate</td>
+        <td><strong>リアルタイム翻訳</strong>。70+ の入力言語を、13 の出力言語に同時通訳</td>
+        <td>多言語カスタマーサポート・国際イベント・動画ライブ翻訳</td>
+        <td>$0.034 / 分</td>
+      </tr>
+      <tr>
+        <td>GPT-Realtime-Whisper</td>
+        <td><strong>ストリーミング音声認識</strong>。喋っている最中にリアルタイムで文字起こし</td>
+        <td>会議・配信のライブ字幕・議事録自動生成</td>
+        <td>$0.017 / 分</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>何が新しいのか</h2>
+
+  <p>これまでの音声 AI と比べた本質的な進化はここ。</p>
+
+  <div class="checklist">
+    <h3>GPT-Realtime-2 の主な進化</h3>
+    <ul>
+      <li><strong>つなぎ言葉が出せる</strong>（「ちょっと待ってね」「確認します」など、考えてる最中も会話を続けられる）</li>
+      <li><strong>並列でツールを呼び出す</strong>（「カレンダー確認中」と言いながら裏で予定検索）</li>
+      <li><strong>失敗時の回復が自然</strong>（黙って止まらず「うまくいかないので別の方法を」と言える）</li>
+      <li><strong>記憶できる長さが4倍</strong>（32K → 128K context・長い会話を最後まで覚えてる）</li>
+      <li><strong>専門用語に強い</strong>（医療用語・固有名詞・業界用語を取り違えにくい）</li>
+      <li><strong>トーン制御</strong>（落ち着いた声・共感的な声・明るい声を使い分け可能）</li>
+    </ul>
+  </div>
+
+  <p>ベンチマークでは、知能テスト（Big Bench Audio）で <strong>81.4% → 96.6%</strong>、複雑な指示への追従（Audio MultiChallenge）で <strong>34.7% → 48.5%</strong> へと大きく改善した。</p>
+
+  <h2>実際の使われ方</h2>
+
+  <p>発表時点で、複数の大手企業が既に実装テストに入っている。「音声 AI で何ができるか」のイメージを掴むのに分かりやすい例。</p>
+
+  <div class="num-grid">
+    <div class="num-card">
+      <span class="num">1</span>
+      <h3>Zillow（不動産）</h3>
+      <p>「予算内・静かな通り・土曜に内見可」と話しかけると、条件絞り込みから内見予約までを音声で完結。<strong>難しいテストで成功率が 69% → 95%</strong> に上昇。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">2</span>
+      <h3>Vimeo（動画）</h3>
+      <p>商品教育動画を再生しながら、各国の言語に**同時翻訳**して提供。「翻訳版を別撮り」していた工数がゼロに。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">3</span>
+      <h3>Priceline（旅行）</h3>
+      <p>音声だけで航空券・ホテル予約から、フライト遅延時のホテル予約変更まで。**現地でのリアルタイム翻訳**にも対応。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">4</span>
+      <h3>Deutsche Telekom（通信）</h3>
+      <p>顧客が**自分の母国語で話せる**カスタマーサポートを構築中。AI が裏でリアルタイム翻訳を担当。</p>
+    </div>
+  </div>
+
+  <h2>使うときの注意点</h2>
+
+  <div class="callout">
+    <span class="callout-label">⚠️ コストが高め</span>
+    <p>GPT-Realtime-2 は<strong>$32/1M input</strong>。テキストの GPT-5 系 API（$1.25/1M input）と比べて約 25 倍。長い音声会話を素材にすると料金が嵩むので、<strong>「使い捨ての試作」より「業務に組み込んで料金を回収する設計」</strong>が必要。</p>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">📍 用途が限定的</span>
+    <p>音声 AI が刺さるのは<strong>「電話・コールセンター・現地翻訳・運転中・歩きながら」</strong>等の手が離れる場面。Web フォームやチャットで済む業務にわざわざ音声を載せると体験が悪化する。<strong>「テキストでも済むなら音声不要」</strong>の判断軸を持つこと。</p>
+  </div>
+
+  <h2>ちーけんさん的にどう捉えるか</h2>
+
+  <p>主力業務（アプリ開発・LIFF・スクール運営）には直接関わらないが、<strong>業務系案件の幅を広げる選択肢として「音声 AI 案件が来たら API 候補に入る」</strong>という位置づけ。</p>
+
+  <p>具体的にイメージしやすいのは：</p>
+
+  <div class="checklist">
+    <h3>案件例（将来候補）</h3>
+    <ul>
+      <li><strong>店舗の電話応対自動化</strong>（営業時間外の予約受付・FAQ）</li>
+      <li><strong>多言語対応のカスタマーサポート</strong>（観光・宿泊業）</li>
+      <li><strong>会議の自動議事録</strong>（Realtime-Whisper で低コスト）</li>
+      <li><strong>講義・配信のライブ字幕</strong>（スクール運営でも活用余地あり）</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <div class="conclusion">
+    <h3>結びの一言</h3>
+    <p>音声 AI が「便利な機能」から<strong>「会話できる相棒」のレベルへ進化した</strong>節目の発表。今すぐ案件にはならなくても、<strong>「音声で何ができるか」のイメージは持っておく価値あり</strong>。電話受付・多言語サポートの問い合わせが来たときの選択肢が増える。</p>
+  </div>
+
+  <div class="related">
+    <h3>関連リンク</h3>
+    <ul>
+      <li>OpenAI 公式発表: <a href="https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api/" target="_blank" rel="noopener">openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api</a></li>
+      <li>Realtime API Playground（試せる）: <a href="https://platform.openai.com/audio/realtime" target="_blank" rel="noopener">platform.openai.com/audio/realtime</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <a href="/">ai-news-effect</a>
+  </footer>
+</main>
+</body>
+</html>
