@@ -17,9 +17,6 @@
 <meta property="article:author" content="@trq212">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-10-html-effectiveness.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
@@ -27,11 +24,11 @@
   <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
 
   <span class="eyebrow">必読 / 思想記事</span>
-  <h1>Anthropic 公式チームが語る、HTML 出力という新常識</h1>
+  <h1>Anthropic 公式チームが語る、<br>HTML 出力という新常識</h1>
 
   <div class="meta">
-    元記事: <a href="https://x.com/trq212/status/2052809885763747935" target="_blank" rel="noopener">https://x.com/trq212/status/2052809885763747935</a><br>
-    著者: @trq212（Claude Code チームメンバー） / 公開日: 2026-05-09
+    <strong style="background:none; font-weight:700;">元記事:</strong> <a href="https://x.com/trq212/status/2052809885763747935" target="_blank" rel="noopener">https://x.com/trq212/status/2052809885763747935</a><br>
+    <strong style="background:none; font-weight:700;">著者:</strong> @trq212（Claude Code チームメンバー） &nbsp;/&nbsp; <strong style="background:none; font-weight:700;">公開日:</strong> 2026-05-09
   </div>
 
   <p class="lead">
@@ -39,50 +36,59 @@
   </p>
 
   <p class="lead">
-    理由はシンプル。<strong>「Markdown だと100行超えると誰も読まない」</strong>。HTML なら表・SVG・コードブロック・インタラクションを全部1ページに詰め込める。リンク1本で共有できて、スマホでも読める。スクール生にとっても、納品物・仕様書を「読まれる形」で渡すのは大きな差別化になる。
+    理由はシンプル。<strong>Markdown だと100行超えると誰も読まない</strong>。HTML なら表・SVG・コードブロック・インタラクションを全部1ページに詰め込める。リンク1本で共有できて、スマホでも読める。スクール生にとっても、納品物・仕様書を「読まれる形」で渡すのは大きな差別化になる。
   </p>
 
-  <img src="/assets/images/2026-05-10-html-effectiveness.png" alt="Markdown から HTML へのフローチャート（情報密度UP・可読性UP・共有しやすい・双方向インタラクション）" class="hero-img">
+  <div class="hero-img-wrap">
+    <img src="/assets/images/2026-05-10-html-effectiveness.png" alt="Markdown から HTML へのフローチャート（情報密度UP・可読性UP・共有しやすい・双方向インタラクション）" class="hero-img">
+  </div>
 
   <h2 class="section-title">5つのポイント</h2>
 
-  <div class="num-card">
-    <span class="num-card-num">1</span>
-    <h3>なぜ Markdown では足りないか</h3>
-    <p>仕様書を100行書いても、自分以外は誰も読まない。Claude が書いてくれた100行を「読み切る」のはほぼ無理だ。<strong>Markdown はメモには良いが、共有・レビュー・意思決定には情報密度が足りない</strong>。</p>
+  <div class="sticky-grid">
+    <div class="sticky-note">
+      <span class="sticky-num">1</span>
+      <h3>なぜ Markdown では足りないか</h3>
+      <p>仕様書を100行書いても、自分以外は誰も読まない。Claude が書いてくれた100行を「読み切る」のはほぼ無理だ。<strong>Markdown はメモには良いが、共有・レビュー・意思決定には情報密度が足りない</strong>。</p>
+    </div>
+
+    <div class="sticky-note">
+      <span class="sticky-num">2</span>
+      <h3>HTML が解放するもの</h3>
+      <p>表・SVG 図解・コードブロック・スライダー・タブまで全部1ページに収まる。色・スタイル・レスポンシブも自在。<strong>「リッチな成果物」を Claude に作らせる素材として、HTML は今の最適解</strong>。</p>
+    </div>
+
+    <div class="sticky-note">
+      <span class="sticky-num">3</span>
+      <h3>使いどころは多い</h3>
+      <p>仕様書・実装計画、PR のコードレビュー解説、技術調査レポート、デザインプロト、30件のチケット並べ替え UI まで。<strong>使い捨ての専用ツールを HTML 1枚で作る</strong>という発想が日々の作業を変える。</p>
+    </div>
+
+    <div class="sticky-note">
+      <span class="sticky-num">4</span>
+      <h3>著者からの警告</h3>
+      <p>記事末尾に重要な一文がある。「これを <code>/html</code> スキルに変換しないでほしい」。<strong>Claude にプロンプトで都度頼むのが本来の姿</strong>で、ガチガチに自動化してしまうと使い分けの感覚が育たないと釘を刺している。</p>
+    </div>
+
+    <div class="sticky-note">
+      <span class="sticky-num">5</span>
+      <h3>ぱるぷんてとしての応用</h3>
+      <p>今後 #ai新着情報 への投稿は、本文サマリ + HTML リンクの形にしていく予定。<strong>スクール上級コースの教材も、スライドではなく HTML 1枚で配る方向で動く</strong>。</p>
+    </div>
   </div>
 
-  <div class="num-card">
-    <span class="num-card-num">2</span>
-    <h3>HTML が解放するもの</h3>
-    <p>表・SVG 図解・コードブロック・スライダー・タブまで全部1ページに収まる。色・スタイル・レスポンシブも自在。<strong>「リッチな成果物」を Claude に作らせる素材として、HTML は今の最適解</strong>。</p>
+  <div class="divider">─ ─ ─ ─ ─</div>
+
+  <div class="conclusion-banner">
+    100行 Markdown を書きそうになった瞬間が、<strong>HTML に切り替える合図</strong>。
   </div>
 
-  <div class="num-card">
-    <span class="num-card-num">3</span>
-    <h3>使いどころは多い</h3>
-    <p>仕様書・実装計画、PR のコードレビュー解説、技術調査レポート、デザインプロト、30件のチケット並べ替え UI まで。<strong>「使い捨ての専用ツールを HTML 1枚で作る」</strong>という発想が日々の作業を変える。</p>
-  </div>
-
-  <div class="num-card">
-    <span class="num-card-num">4</span>
-    <h3>著者からの警告</h3>
-    <p>記事末尾に重要な一文がある。「これを <code>/html</code> スキルに変換しないでほしい」。<strong>Claude にプロンプトで都度頼むのが本来の姿</strong>で、ガチガチに自動化してしまうと使い分けの感覚が育たないと釘を刺している。</p>
-  </div>
-
-  <div class="num-card">
-    <span class="num-card-num">5</span>
-    <h3>ぱるぷんてとしての応用</h3>
-    <p>今後 #ai新着情報 への投稿は、本文サマリ + HTML リンクの形にしていく予定。詳細・図解・スマホ対応はすべて HTML 側に任せる。<strong>スクール上級コースの教材も、スライドではなく HTML 1枚で配る方向で動く</strong>。</p>
-  </div>
-
-  <div class="divider">─────</div>
-
-  <p class="conclusion">100行 Markdown を書きそうになった瞬間が、HTML に切り替える合図。</p>
-  <p class="conclusion">読まれない仕様書はもう作らない、<strong>というスタート</strong>。</p>
+  <p class="lead" style="text-align:center; font-size: 16px; color: var(--text-secondary);">
+    読まれない仕様書はもう作らない、というスタート。
+  </p>
 
   <div class="related">
-    <h3>関連リンク</h3>
+    <h3>📎 関連リンク</h3>
     <ul>
       <li>サンプル集: <a href="https://thariqs.github.io/html-effectiveness/" target="_blank" rel="noopener">thariqs.github.io/html-effectiveness</a>（@trq212 が公開している実例集）</li>
       <li>双方向プレイグラウンド記事: <a href="https://x.com/trq212/status/2017024445244924382" target="_blank" rel="noopener">@trq212 のプレイグラウンド投稿</a></li>

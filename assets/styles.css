@@ -1,38 +1,53 @@
 /* ai-news-effect 共通スタイルシート
  * デザインルール: DESIGN.md を参照
- * 方針: 手書きノート風画像と一体感のある、温かく品のあるライトテーマ
+ * 方針: ノート風融合 — 手書きインフォグラフィック画像と HTML が完全に一体化したペーパー質感
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Klee+One:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
 :root {
-  /* Background */
-  --bg-base: #faf7f0;
-  --bg-surface: #ffffff;
+  /* Background — ノートの紙感 */
+  --bg-paper: #faf6ec;
+  --bg-paper-darker: #f3eedd;
+  --bg-card: #ffffff;
   --bg-elev: #fdf8e8;
 
+  /* Sticky note colors（5項目用付箋カラー） */
+  --sticky-yellow: #fff5b1;
+  --sticky-blue: #d4eaf8;
+  --sticky-pink: #ffd9d9;
+  --sticky-green: #d6ecc6;
+  --sticky-orange: #ffd9b3;
+
   /* Text */
-  --text-primary: #1f1a14;
+  --text-primary: #2a221a;
   --text-secondary: #4a4338;
-  --text-muted: #7a7468;
+  --text-muted: #807868;
 
   /* Accent */
   --accent-warm: #c2782a;
-  --accent-marker: #f5b85f;
-  --accent-warm-bg: rgba(194, 120, 42, 0.08);
+  --accent-marker: #ffe066;
+  --accent-marker-soft: #fff5b1;
   --accent-link: #1e5da8;
   --accent-coral: #c64b3a;
+  --accent-blue: #4a90b9;
+
+  /* Tape colors */
+  --tape-yellow: rgba(255, 224, 102, 0.55);
+  --tape-blue: rgba(74, 144, 185, 0.35);
 
   /* Border / Shadow */
-  --border: rgba(31, 26, 20, 0.08);
-  --border-strong: rgba(31, 26, 20, 0.16);
-  --shadow-sm: 0 1px 2px rgba(31, 26, 20, 0.04);
-  --shadow-md: 0 4px 16px rgba(31, 26, 20, 0.06);
+  --border: rgba(42, 34, 26, 0.1);
+  --border-strong: rgba(42, 34, 26, 0.2);
+  --shadow-paper: 0 1px 1px rgba(42, 34, 26, 0.04), 0 4px 12px rgba(42, 34, 26, 0.08);
+  --shadow-sticky: 0 2px 4px rgba(42, 34, 26, 0.08), 0 8px 24px rgba(42, 34, 26, 0.1);
 
   /* Radius */
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 20px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
 
-  /* Space (8px grid) */
+  /* Space */
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
@@ -40,84 +55,144 @@
   --space-5: 48px;
   --space-6: 64px;
 
-  /* Layout */
-  --max-w: 760px;
+  --max-w: 800px;
 
   /* Typography */
   --font-sans: "Inter", "Noto Sans JP", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-handwritten: "Klee One", "Noto Sans JP", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 * { box-sizing: border-box; }
 
-html, body {
+html {
+  background: var(--bg-paper-darker);
+}
+
+body {
   margin: 0;
   padding: 0;
-  background: var(--bg-base);
+  background:
+    /* 横罫線（うっすら青） */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      rgba(74, 144, 185, 0.08) 31px,
+      rgba(74, 144, 185, 0.08) 32px
+    ),
+    /* ベース紙色 */
+    var(--bg-paper);
+  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  line-height: 1.85;
+  font-size: 16px;
+  line-height: 1.95;
   font-feature-settings: "palt";
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: var(--space-5) var(--space-3);
+  padding: var(--space-5) var(--space-3) var(--space-6);
+  position: relative;
+}
+
+/* ノートの左端：スパイラルバインディング装飾（PCのみ） */
+@media (min-width: 768px) {
+  .container::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: var(--space-4);
+    bottom: var(--space-5);
+    width: 18px;
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(42, 34, 26, 0.25) 0,
+        rgba(42, 34, 26, 0.25) 4px,
+        transparent 4.5px
+      );
+    background-size: 18px 36px;
+    background-repeat: repeat-y;
+    opacity: 0.4;
+    pointer-events: none;
+  }
 }
 
 /* === Typography === */
 
 h1, h2, h3, h4 {
   font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  line-height: 1.45;
+  letter-spacing: 0.005em;
   color: var(--text-primary);
 }
 
 h1 {
-  font-size: clamp(28px, 5vw, 40px);
+  font-family: var(--font-handwritten);
+  font-weight: 600;
+  font-size: clamp(30px, 5.5vw, 44px);
   margin: 0 0 var(--space-3);
-}
-
-h2 {
-  font-size: clamp(22px, 3.5vw, 26px);
-  margin: var(--space-5) 0 var(--space-2);
+  line-height: 1.4;
 }
 
 h2.section-title {
-  font-size: clamp(22px, 3.5vw, 26px);
-  margin: var(--space-5) 0 var(--space-2);
+  font-family: var(--font-handwritten);
+  font-weight: 600;
+  font-size: clamp(24px, 4vw, 30px);
+  margin: var(--space-5) 0 var(--space-3);
+  display: inline-block;
+  position: relative;
+  padding: 0 6px 4px;
+}
+
+h2.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  background: var(--accent-marker);
+  z-index: -1;
+  opacity: 0.7;
+  border-radius: 2px;
+  transform: skewX(-2deg);
 }
 
 h3 {
-  font-size: 18px;
+  font-size: 19px;
   margin: var(--space-3) 0 var(--space-1);
 }
 
 p {
   margin: 0 0 var(--space-2);
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 a {
   color: var(--accent-link);
   text-decoration: none;
-  border-bottom: 1px dashed transparent;
-  transition: border-color 0.15s, color 0.15s;
+  border-bottom: 1.5px solid var(--accent-link);
+  transition: opacity 0.15s;
 }
+a:hover { opacity: 0.7; }
 
-a:hover {
-  border-bottom-color: var(--accent-link);
+/* マーカー風強調 */
+strong {
+  background: linear-gradient(180deg, transparent 55%, var(--accent-marker-soft) 55%);
+  font-weight: 700;
+  padding: 0 2px;
 }
 
 code {
   font-family: var(--font-mono);
-  font-size: 0.92em;
+  font-size: 0.9em;
   background: var(--bg-elev);
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 4px;
   color: var(--accent-warm);
   border: 1px solid var(--border);
@@ -125,7 +200,7 @@ code {
 
 hr {
   border: none;
-  border-top: 1px solid var(--border);
+  border-top: 1px dashed var(--border-strong);
   margin: var(--space-5) 0;
 }
 
@@ -133,12 +208,16 @@ hr {
 
 .eyebrow {
   display: inline-block;
-  font-size: 12px;
+  font-family: var(--font-handwritten);
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--accent-warm);
   margin-bottom: var(--space-1);
+  padding: 2px 8px;
+  background: var(--sticky-yellow);
+  border-radius: 4px;
+  transform: rotate(-1deg);
+  box-shadow: var(--shadow-paper);
 }
 
 .breadcrumb {
@@ -152,182 +231,262 @@ hr {
   border-bottom: 1px dashed var(--text-muted);
 }
 
+/* Meta（出典枠 — マスキングテープ風） */
 .meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-size: 13px;
-  color: var(--text-muted);
-  border-left: 3px solid var(--accent-warm);
-  background: var(--accent-warm-bg);
-  padding: var(--space-1) var(--space-2);
-  border-radius: 0 var(--r-sm) var(--r-sm) 0;
-  margin: var(--space-2) 0 var(--space-3);
+  display: block;
+  font-size: 14px;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--r-sm);
+  margin: var(--space-3) 0 var(--space-4);
+  position: relative;
+  box-shadow: var(--shadow-paper);
   line-height: 1.7;
 }
 
-.meta a {
-  color: var(--text-muted);
-  border-bottom: 1px dashed var(--text-muted);
+.meta::before,
+.meta::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 22px;
+  background: var(--tape-yellow);
+  top: -10px;
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(42, 34, 26, 0.08);
 }
+
+.meta::before {
+  left: -12px;
+  transform: rotate(-3deg);
+}
+
+.meta::after {
+  right: -12px;
+  transform: rotate(2deg);
+}
+
+.meta a { color: var(--accent-link); border-bottom: 1px solid var(--accent-link); }
 
 .lead {
   font-size: 17px;
-  color: var(--text-secondary);
-  margin: var(--space-3) 0 var(--space-3);
-  line-height: 1.85;
+  color: var(--text-primary);
+  margin: var(--space-3) 0;
+  line-height: 2;
 }
 
-.lead strong {
-  color: var(--text-primary);
+/* Hero Image — テープで貼った写真風 */
+.hero-img-wrap {
+  position: relative;
+  margin: var(--space-5) auto;
+  max-width: 720px;
+}
+
+.hero-img-wrap::before {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 28px;
+  background: var(--tape-yellow);
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  border-radius: 1px;
+  box-shadow: 0 2px 4px rgba(42, 34, 26, 0.1);
+  z-index: 2;
 }
 
 .hero-img {
   width: 100%;
-  border-radius: var(--r-md);
-  border: 1px solid var(--border);
-  margin: var(--space-3) 0 var(--space-5);
   display: block;
-  box-shadow: var(--shadow-md);
-  background: var(--bg-elev);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sticky);
+  background: #fff;
 }
 
-/* Hero (top of page) */
-
+/* Hero（記事一覧トップ） */
 .hero {
-  padding: var(--space-6) 0 var(--space-3);
-  border-bottom: 1px solid var(--border);
+  padding: var(--space-5) 0 var(--space-3);
   margin-bottom: var(--space-4);
+  text-align: center;
+  border-bottom: 1px dashed var(--border-strong);
 }
 
-/* Card (general) */
-
+/* Card（一般） */
 .card {
-  background: var(--bg-surface);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: var(--space-3);
   margin: var(--space-2) 0;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-paper);
 }
 
-/* Card Link (article list) */
-
+/* Card Link（投稿一覧用 — 付箋風） */
 .card-link {
   display: block;
-  background: var(--bg-surface);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  padding: var(--space-3);
-  margin: var(--space-2) 0;
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-3) 0;
   color: inherit;
-  border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  position: relative;
+  box-shadow: var(--shadow-paper);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-link::before {
+  content: "";
+  position: absolute;
+  width: 70px;
+  height: 22px;
+  background: var(--tape-yellow);
+  top: -10px;
+  left: 24px;
+  transform: rotate(-2deg);
+  border-radius: 1px;
 }
 
 .card-link:hover {
-  border-color: var(--accent-warm);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px) rotate(0.3deg);
+  box-shadow: var(--shadow-sticky);
 }
 
 .card-link h2 {
-  font-size: 18px;
-  font-weight: 700;
+  font-family: var(--font-handwritten);
+  font-size: 22px;
   margin: 0 0 var(--space-1);
   color: var(--text-primary);
-  letter-spacing: -0.005em;
+  border-bottom: none;
 }
 
 .card-link .meta-inline {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   margin: 0 0 var(--space-1);
-  border: none;
-  background: none;
-  padding: 0;
 }
 
 .card-link p {
   margin: 0;
   color: var(--text-secondary);
   font-size: 14px;
-}
-
-/* Tag */
-
-.tag {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--accent-warm-bg);
-  color: var(--accent-warm);
-  margin-right: 6px;
-}
-
-/* Numbered Card (5項目展開用) */
-
-.num-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent-warm);
-  border-radius: 0 var(--r-md) var(--r-md) 0;
-  padding: var(--space-3);
-  margin: var(--space-2) 0;
-  box-shadow: var(--shadow-sm);
-}
-
-.num-card-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--accent-warm);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 14px;
-  margin-right: var(--space-1);
-  vertical-align: middle;
-}
-
-.num-card h3 {
-  display: inline;
-  font-size: 18px;
-  margin: 0;
-  color: var(--text-primary);
-  letter-spacing: -0.005em;
-  vertical-align: middle;
-}
-
-.num-card p {
-  margin: var(--space-1) 0 0;
-  color: var(--text-secondary);
   line-height: 1.85;
 }
 
-.num-card strong {
+.card-link strong {
+  background: linear-gradient(180deg, transparent 55%, var(--accent-marker-soft) 55%);
+}
+
+/* Tag */
+.tag {
+  display: inline-block;
+  font-family: var(--font-handwritten);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 2px 10px;
+  background: var(--sticky-yellow);
   color: var(--text-primary);
+  border-radius: 4px;
+  transform: rotate(-1deg);
+  box-shadow: 0 1px 2px rgba(42, 34, 26, 0.1);
+}
+
+/* === 付箋風 5項目カード === */
+.sticky-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+@media (min-width: 720px) {
+  .sticky-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4) var(--space-5);
+  }
+  .sticky-grid > .sticky-note:nth-child(5) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+  }
+}
+
+.sticky-note {
+  background: var(--sticky-yellow);
+  padding: var(--space-3);
+  border-radius: 2px;
+  position: relative;
+  box-shadow: var(--shadow-sticky);
+  font-family: var(--font-sans);
+  transform: rotate(-1deg);
+  transition: transform 0.2s;
+}
+
+.sticky-note:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.sticky-note:nth-child(2) { background: var(--sticky-blue); transform: rotate(1deg); }
+.sticky-note:nth-child(3) { background: var(--sticky-pink); transform: rotate(-0.5deg); }
+.sticky-note:nth-child(4) { background: var(--sticky-green); transform: rotate(0.5deg); }
+.sticky-note:nth-child(5) { background: var(--sticky-orange); transform: rotate(-1deg); }
+
+.sticky-note:nth-child(2):hover,
+.sticky-note:nth-child(4):hover { transform: rotate(0deg) scale(1.02); }
+
+/* 付箋の番号 */
+.sticky-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: #fff;
+  font-family: var(--font-handwritten);
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: var(--space-1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.sticky-note h3 {
+  font-family: var(--font-handwritten);
+  font-size: 19px;
+  margin: 4px 0 var(--space-1);
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.sticky-note p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.sticky-note strong {
+  background: linear-gradient(180deg, transparent 55%, rgba(255, 255, 255, 0.7) 55%);
 }
 
 /* Quote */
-
 .quote {
-  border-left: 4px solid var(--accent-marker);
-  padding: var(--space-1) var(--space-3);
-  background: var(--accent-warm-bg);
+  border-left: 4px solid var(--accent-warm);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-elev);
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
   margin: var(--space-3) 0;
-  font-style: italic;
-  color: var(--text-secondary);
+  font-family: var(--font-handwritten);
+  font-style: normal;
+  color: var(--text-primary);
+  font-size: 17px;
+  line-height: 1.7;
 }
 
 /* Button */
-
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -339,54 +498,62 @@ hr {
   border: none;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.1s, background 0.15s;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  background: #a86423;
   border-bottom: none;
+  box-shadow: var(--shadow-paper);
+  transition: transform 0.1s;
 }
+.btn:hover { transform: translateY(-1px); opacity: 0.92; }
 
 .btn-ghost {
   background: transparent;
   color: var(--text-primary);
-  border: 1px solid var(--border-strong);
+  border: 2px dashed var(--border-strong);
+  border-bottom: 2px dashed var(--border-strong);
 }
 
-.btn-ghost:hover {
-  background: var(--bg-elev);
-}
-
-/* Divider */
-
+/* Divider — 手書き矢印風 */
 .divider {
   text-align: center;
   color: var(--text-muted);
-  letter-spacing: 0.5em;
+  letter-spacing: 0.4em;
   margin: var(--space-5) 0 var(--space-3);
-  font-size: 12px;
+  font-family: var(--font-handwritten);
+  font-size: 16px;
 }
 
-/* Conclusion */
-
-.conclusion {
+/* Conclusion — 黄色バナー */
+.conclusion-banner {
+  background: var(--accent-marker);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--r-md);
+  margin: var(--space-4) 0;
   text-align: center;
-  color: var(--text-secondary);
-  font-size: 15px;
-  margin: var(--space-3) 0;
-  line-height: 1.85;
+  font-family: var(--font-handwritten);
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-paper);
+  position: relative;
+  transform: rotate(-0.5deg);
 }
 
-.conclusion strong {
-  color: var(--accent-warm);
+.conclusion-banner::before {
+  content: "💡 ";
+  margin-right: 4px;
 }
 
-/* Related links */
+.conclusion-banner strong {
+  background: none;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-warm);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
 
+/* Related */
 .related {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border: 1px dashed var(--border-strong);
   border-radius: var(--r-md);
   padding: var(--space-3);
   margin: var(--space-5) 0;
@@ -394,27 +561,17 @@ hr {
 
 .related h3 {
   margin: 0 0 var(--space-1);
-  font-size: 14px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
+  font-family: var(--font-handwritten);
+  font-size: 16px;
+  color: var(--text-primary);
 }
 
-.related ul {
-  margin: 0;
-  padding-left: var(--space-2);
-}
-
-.related li {
-  margin: var(--space-1) 0;
-  font-size: 14px;
-}
+.related ul { margin: 0; padding-left: var(--space-2); }
+.related li { margin: var(--space-1) 0; font-size: 14px; }
 
 /* Footer */
-
 footer {
-  border-top: 1px solid var(--border);
+  border-top: 1px dashed var(--border-strong);
   padding: var(--space-3) 0;
   margin-top: var(--space-6);
   font-size: 13px;
@@ -423,16 +580,10 @@ footer {
 }
 
 /* Responsive */
-
 @media (max-width: 540px) {
-  .container {
-    padding: var(--space-3) var(--space-2);
-  }
-  .num-card {
-    padding: var(--space-2);
-  }
-  .meta {
-    padding: var(--space-1) var(--space-2);
-    font-size: 12px;
-  }
+  .container { padding: var(--space-3) var(--space-2) var(--space-5); }
+  .meta { padding: var(--space-2); font-size: 13px; }
+  .meta::before, .meta::after { display: none; }
+  .hero-img-wrap::before { width: 80px; }
+  .sticky-note { padding: var(--space-2); }
 }
