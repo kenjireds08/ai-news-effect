@@ -49,8 +49,7 @@
   --space-7: 96px;
 
   /* Layout widths */
-  --max-w-text: 720px;
-  --max-w-wide: 1100px;
+  --max-w: 1000px;
   --gutter: max(var(--space-2), 4vw);
 
   /* Typography */
@@ -78,41 +77,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* === Container with grid for text/wide layouts === */
+/* === Container (全要素同じ横幅・左揃え) === */
 
 .container {
-  display: grid;
-  grid-template-columns:
-    [full-start] minmax(var(--gutter), 1fr)
-    [text-start] min(var(--max-w-text), 100% - var(--gutter) * 2)
-    [text-end] minmax(var(--gutter), 1fr) [full-end];
-  padding: var(--space-5) 0 var(--space-7);
-  row-gap: 0;
-}
-
-/* Default: every direct child sits in the text column */
-.container > * {
-  grid-column: text;
-}
-
-/* Wide elements span the full container width with their own max-width */
-.container > .hero-img-wrap,
-.container > .compare-table-wrap,
-.container > .num-grid,
-.container > .card-link,
-.container > .related-wide {
-  grid-column: full;
-  max-width: var(--max-w-wide);
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
-}
-
-/* Conclusion は本文段に収める（読み物として自然・スマホで端にくっつかない） */
-.container > .conclusion {
-  grid-column: text;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: var(--space-5) var(--gutter) var(--space-7);
 }
 
 /* === Typography === */

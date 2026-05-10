@@ -102,28 +102,23 @@
 
 ### 横幅構造（重要）
 
-CSS Grid で「本文段（720px）」と「wide（1100px）」を切り替える。
+**全要素を同じ横幅 1000px に統一・左端を揃える。** 本文・見出し・画像・テーブル・カードグリッドすべて同じコンテナ幅で表示する。NYT・Stripe Press・Linear blog 等のエディトリアル媒体の定石。
 
 ```css
 .container {
-  display: grid;
-  grid-template-columns:
-    [full-start] minmax(gutter, 1fr)
-    [text-start] min(720px, 100% - gutter*2)
-    [text-end] minmax(gutter, 1fr) [full-end];
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-5) var(--gutter) var(--space-7);
 }
 ```
 
 | 用途 | 配置 |
 |------|------|
-| 本文段（p, h2, h3, lead, quote, checklist, callout） | text 列（720px） |
-| Conclusion（読み物として本文と一体）| text 列（720px） |
-| ヒーロー画像 | full（1100px） |
-| 比較表（compare-table-wrap） | full（1100px） |
-| 番号カードグリッド（num-grid） | full（1100px） |
-| カードリンク一覧（card-link） | full（1100px） |
+| すべての要素（本文・h2・h3・lead・hero-img・compare-table・num-grid・card-link・conclusion・related・footer） | コンテナ内 100% 幅・左端揃え |
 
 **比較表のスマホ対応:** `.compare-table` は `min-width: 480px` を設定。スマホ幅でこれを下回ると `.compare-table-wrap` の `overflow-x: auto` で横スクロールになる。
+
+**過去案（廃止）:** 本文 720px / wide 要素 1100px の grid 切替は左端ズレが見栄え悪く 2026-05-10 に廃止。
 
 ### 角丸
 
