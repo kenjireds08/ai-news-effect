@@ -717,7 +717,7 @@ button:focus-visible,
 
 @media (max-width: 640px) {
   .container {
-    padding: var(--space-4) 0 var(--space-6);
+    padding: var(--space-4) var(--gutter) var(--space-6);
   }
   .meta {
     padding: var(--space-2);
