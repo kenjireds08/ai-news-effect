@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skills と SubAgent、混ぜないで使う。Claude Code / Codex の役割分担5原則 | ai-news-effect</title>
+<meta name="description" content="Claude Code・Codex の Skills / SubAgent / CLAUDE.md / MCP / Hooks をどう使い分けるか。@kawai_design 氏の整理を、5つの仕組みの比較表とチェックリストで噛み砕く。">
+<meta property="og:title" content="Skills と SubAgent、混ぜないで使う。Claude Code / Codex の役割分担5原則">
+<meta property="og:description" content="「Skill は再利用する手順、SubAgent は分担する作業者」。混同すると運用が重くなる。5つの仕組みを比較表でスッキリ整理。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ai-news-effect.pages.dev/posts/2026-05-10-skills-vs-subagent.html">
+<meta property="og:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-10-skills-vs-subagent.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:site_name" content="ai-news-effect">
+<meta property="article:published_time" content="2026-05-10">
+<meta property="article:author" content="@kawai_design">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-10-skills-vs-subagent.png">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<main class="container">
+  <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
+
+  <span class="eyebrow">整理 / Claude Code 運用</span>
+  <h1>Skills と SubAgent、<br><span class="grad-text">混ぜないで使う</span>。</h1>
+
+  <div class="meta">
+    <strong style="background:none; font-weight:700;">元記事:</strong> <a href="https://x.com/kawai_design/status/2052904289564258588" target="_blank" rel="noopener">https://x.com/kawai_design/status/2052904289564258588</a><br>
+    <strong style="background:none; font-weight:700;">著者:</strong> @kawai_design &nbsp;/&nbsp; <strong style="background:none; font-weight:700;">公開日:</strong> 2026-05-01
+  </div>
+
+  <p class="lead">
+    Claude Code や Codex を使い始めると、必ず <strong>Skills と SubAgent の使い分け</strong>でつまずく。「Skill にすればいいのか、SubAgent に任せればいいのか」という迷いだ。
+  </p>
+
+  <p class="lead">
+    結論はシンプル。<strong>Skill は再利用する手順、SubAgent は分担する作業者</strong>。
+    片方だけ使う・両方ごちゃ混ぜに使う、のどちらも運用が重くなる。本記事では @kawai_design 氏の整理を、表とチェックリストで噛み砕く。
+  </p>
+
+  <div class="hero-img-wrap">
+    <img src="/assets/images/2026-05-10-skills-vs-subagent.png" alt="Claude Code / Codex の5つの仕組み（CLAUDE.md / Skills / SubAgent / MCP / Hooks）の役割分担を示すインフォグラフィック" class="hero-img">
+  </div>
+
+  <h2>5つの仕組みの役割（早見表）</h2>
+
+  <p>Claude Code・Codex で使う仕組みは、大きく分けて5つ。それぞれ別の役割を持っている。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>仕組み</th>
+        <th>いつ使うか</th>
+        <th>例えると</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CLAUDE.md<br>(AGENTS.md)</td>
+        <td><strong>常時守らせたいルール</strong>。文体・命名規則・セキュリティ方針など、毎回適用すべき内容</td>
+        <td>会社の憲法</td>
+      </tr>
+      <tr>
+        <td>Skills</td>
+        <td><strong>何度も繰り返す手順</strong>。記事執筆・PR レビュー・議事録整形など、形式が決まった作業</td>
+        <td>業務マニュアル</td>
+      </tr>
+      <tr>
+        <td>SubAgent</td>
+        <td><strong>並列で進めたい調査</strong>。コード探索・ログ解析・複数観点のレビューなど、ノイズが多い作業</td>
+        <td>専門担当者</td>
+      </tr>
+      <tr>
+        <td>MCP</td>
+        <td><strong>外部システムとの接続</strong>。Notion・Slack・社内 API など、外と繋ぐ必要がある作業</td>
+        <td>外線電話</td>
+      </tr>
+      <tr>
+        <td>Hooks</td>
+        <td><strong>決まったタイミングで自動処理</strong>。コミット時・セッション開始時など、トリガーが固定されている作業</td>
+        <td>自動実行装置</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>この5つを混ぜずに仕分けるだけで、プロンプトが短くなり、メイン会話が情報まみれになりにくくなる。</p>
+
+  <h2>Skill にすべきか、SubAgent にすべきか</h2>
+
+  <p>迷ったときの判断条件はシンプル。それぞれ次の特徴があれば、その仕組みが向いている。</p>
+
+  <div class="checklist">
+    <h3>Skill にすべき作業（3つの条件）</h3>
+    <ul>
+      <li><strong>作業手順が毎回ほぼ同じ</strong>（記事構成・レビュー基準・出力フォーマット等）</li>
+      <li><strong>参照ファイルやテンプレートがある</strong>（差し込みたい定型文・図解パターン）</li>
+      <li><strong>出力形式を固定したい</strong>（タイトル文字数・箇条書きルール等）</li>
+    </ul>
+  </div>
+
+  <div class="checklist">
+    <h3>SubAgent にすべき作業（4つの条件）</h3>
+    <ul>
+      <li><strong>並列化できる</strong>（観点A・観点B・観点C を同時に調べたい）</li>
+      <li><strong>調査ログが多い</strong>（メイン会話に流すと判断材料が埋もれる）</li>
+      <li><strong>専門観点が分かれる</strong>（セキュリティ / テスト / 保守性など別軸）</li>
+      <li><strong>判断材料だけ返してほしい</strong>（中間ログは不要、結論だけ欲しい）</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">⚠️ 逆に向かない場面</span>
+    <p><strong>1回しか使わない作業を Skill 化しない</strong>。Skill は増やすほど誤発火リスクが上がるので、ROI が低いものは作らない。<strong>次の一手がその結果に完全依存する作業は SubAgent にしない</strong>。メインで処理した方が速い。</p>
+  </div>
+
+  <h2>なぜ「混ぜないで」なのか</h2>
+
+  <p>Skills と SubAgent を混同すると、こんな失敗が起きる。</p>
+
+  <blockquote class="quote">
+    毎回守る文体ルールを Skill に入れる →<strong>Skill が発火しない場面で文体が崩れる</strong>。
+    note 執筆のような成果物別ワークフローを CLAUDE.md に全部入れる →<strong>常時 context を圧迫する</strong>。
+  </blockquote>
+
+  <p>Codex 公式が <strong>context pollution（会話が情報まみれになって判断が鈍る現象）</strong> と呼ぶ問題が起きやすくなる。
+  探索ログ・スタックトレース・テスト出力でメイン会話が汚れると、後半の判断品質が落ちる。</p>
+
+  <p>SubAgent はこのノイズを別スレッドに逃がし、要約だけメインに戻す装置。混ぜずに使い分けることで、AIが本来の判断力を発揮できる。</p>
+
+  <h2>最強の組み合わせ「Skill × SubAgent」</h2>
+
+  <p>そのうえで、両者を組み合わせると効果が跳ね上がる。
+  <strong>Skill で仕事の型を定義し、SubAgent で実行を分ける</strong> 形だ。</p>
+
+  <p>例：PR レビューの場合</p>
+
+  <div class="num-grid">
+    <div class="num-card">
+      <span class="num">1</span>
+      <h3>code-review Skill を作る</h3>
+      <p>レビュー基準・出力形式・禁止事項を SKILL.md に書く。これで「何を」「どう」レビューするかが固定される。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">2</span>
+      <h3>SubAgent を3つに分ける</h3>
+      <p><strong>security 担当・test gap 担当・maintainability 担当</strong>。それぞれ別 context で並列に調査する。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">3</span>
+      <h3>main agent で集約</h3>
+      <p>3つの結果を受け取り、重要度順にまとめる。レビュー基準は毎回同じ、調査だけ並列化される。</p>
+    </div>
+  </div>
+
+  <h2>Claude Code と Codex で異なる点</h2>
+
+  <p>同じ「Skills」「SubAgent」という言葉でも、Claude Code と Codex で動きが違う。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Claude Code</th>
+        <th>Codex</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Skills</td>
+        <td>description が一致すると <strong>自律的に発火</strong>（model-invoked）</td>
+        <td>明示起動と暗黙起動の両方。description だけ先読みして context 節約</td>
+      </tr>
+      <tr>
+        <td>SubAgent</td>
+        <td>説明文と一致すれば <strong>自動委任</strong>。<code>/agents</code> で project / user 単位で作成</td>
+        <td>明示依頼が基本。「並列で2つ動かして」と頼まないと spawn しない</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>つまり Claude Code は「気の利く部下」型、Codex は「明示的に頼まないと動かない」型。同じ概念でも運用感覚が違うので、両方使う場合は意識して切り替える必要がある。</p>
+
+  <hr class="divider">
+
+  <h2>今日から見直す4ファイル</h2>
+
+  <p>記事末尾の実践的アドバイス。既存の指示を以下の4種類に仕分けるだけで、運用がスッキリする。</p>
+
+  <div class="checklist">
+    <h3>仕分けるファイル</h3>
+    <ul>
+      <li><strong>CLAUDE.md / AGENTS.md</strong> — 常時ルール（会社の憲法）</li>
+      <li><strong>skills/SKILL.md</strong> — 成果物ごとの手順（業務マニュアル）</li>
+      <li><strong>agents/カスタムエージェント設定</strong> — 専門担当の人格と権限</li>
+      <li><strong>MCP / hooks 設定</strong> — 外部接続と自動実行</li>
+    </ul>
+  </div>
+
+  <p>この整理ができると、プロンプトが短くなる。メイン会話も汚れにくくなる。</p>
+
+  <div class="conclusion">
+    <h3>結びの一言</h3>
+    <p>Claude Code や Codex を使う目的は「AIに詳しくなること」ではなく、<strong>仕事の再現性を上げ、作業時間を減らし、判断を速くすること</strong>。そのための最小構成が、5つの仕組みを混ぜないで使うこと。<strong>増やすだけでなく、削る判断ができるようになる</strong>のが、この整理の最大の価値。</p>
+  </div>
+
+  <div class="related">
+    <h3>関連リンク</h3>
+    <ul>
+      <li>元記事（@kawai_design）: <a href="https://x.com/kawai_design/status/2052904289564258588" target="_blank" rel="noopener">x.com/kawai_design/status/2052904289564258588</a></li>
+      <li>Claude Code 公式: <a href="https://docs.claude.com/en/docs/claude-code/skills" target="_blank" rel="noopener">Skills</a> / <a href="https://docs.claude.com/en/docs/claude-code/sub-agents" target="_blank" rel="noopener">Sub-agents</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <a href="/">ai-news-effect</a>
+  </footer>
+</main>
+</body>
+</html>

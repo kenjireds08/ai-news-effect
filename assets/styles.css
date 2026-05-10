@@ -521,6 +521,146 @@ hr {
   margin: var(--space-6) 0;
 }
 
+/* === Compare Table === */
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-3) 0;
+  font-size: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.compare-table thead {
+  background: var(--accent-soft-bg);
+}
+
+.compare-table th {
+  padding: var(--space-2) var(--space-2);
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--accent-primary);
+}
+
+.compare-table td {
+  padding: var(--space-2);
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.7;
+}
+
+.compare-table tr:hover td {
+  background: var(--bg-elev);
+}
+
+.compare-table td:first-child {
+  font-weight: 600;
+  color: var(--text-heading);
+  white-space: nowrap;
+}
+
+.compare-table strong {
+  background: linear-gradient(transparent 62%, var(--accent-marker) 62%);
+}
+
+@media (max-width: 640px) {
+  .compare-table {
+    font-size: 13px;
+  }
+  .compare-table th,
+  .compare-table td {
+    padding: var(--space-1) var(--space-2);
+  }
+}
+
+/* === Checklist === */
+
+.checklist {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.checklist::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--grad-border);
+}
+
+.checklist h3 {
+  margin: 0 0 var(--space-2);
+  font-size: 17px;
+  color: var(--text-heading);
+  padding-left: var(--space-1);
+}
+
+.checklist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checklist li {
+  position: relative;
+  padding: 6px 0 6px 28px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.checklist li strong {
+  color: var(--text-primary);
+}
+
+/* === Callout (補足ボックス) === */
+
+.callout {
+  background: var(--accent-soft-bg);
+  border-radius: var(--r-md);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
+  border-left: 3px solid var(--accent-primary);
+}
+
+.callout-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-primary);
+  margin-bottom: var(--space-1);
+}
+
+.callout p:last-child { margin-bottom: 0; }
+
 /* === Conclusion === */
 
 .conclusion {
