@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ai-news-effect | AI ニュース・記事要約</title>
+<meta name="description" content="未来AI学院 / ぱるぷんてスクール向け、AI ニュース・記事要約の HTML 公開サイト。">
+<meta property="og:title" content="ai-news-effect | AI ニュース・記事要約">
+<meta property="og:description" content="未来AI学院 / ぱるぷんてスクール向け、AI ニュース・記事要約の HTML 公開サイト。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #0d1014;
+    --bg-surface: #161a20;
+    --bg-elev: #1f242c;
+    --text-primary: #e8e6df;
+    --text-secondary: #c4c2bc;
+    --text-muted: #8b8f95;
+    --accent-warm: #f5b85f;
+    --accent-warm-dim: rgba(245, 184, 95, 0.12);
+    --accent-link: #7ab8ff;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --r-sm: 8px;
+    --r-md: 14px;
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+    --space-5: 48px;
+    --space-6: 64px;
+    --max-w: 760px;
+    --font-sans: "Inter", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.75;
+    font-feature-settings: "palt";
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: var(--space-5) var(--space-3); }
+  .hero { padding: var(--space-6) 0 var(--space-3); border-bottom: 1px solid var(--border); margin-bottom: var(--space-4); }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent-warm); margin-bottom: var(--space-1);
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 var(--space-2);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .lead { color: var(--text-secondary); font-size: 16px; }
+  a { color: var(--accent-link); text-decoration: none; }
+  .card-link {
+    display: block;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: var(--space-3);
+    margin: var(--space-2) 0;
+    color: inherit;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  }
+  .card-link:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-elev);
+    transform: translateY(-1px);
+  }
+  .card-link h2 {
+    font-size: 18px; font-weight: 700;
+    margin: 0 0 var(--space-1);
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+  }
+  .card-link .meta { font-size: 12px; color: var(--text-muted); margin: 0 0 var(--space-1); }
+  .card-link p { margin: 0; color: var(--text-secondary); font-size: 14px; }
+  .tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--accent-warm-dim);
+    color: var(--accent-warm);
+    margin-right: 6px;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: var(--space-3) 0;
+    margin-top: var(--space-6);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  @media (max-width: 540px) { .container { padding: var(--space-3) var(--space-2); } }
+</style>
+</head>
+<body>
+<main class="container">
+  <header class="hero">
+    <span class="eyebrow">ai-news-effect</span>
+    <h1>AI ニュース・記事要約</h1>
+    <p class="lead">未来AI学院 / ぱるぷんてスクールで共有する AI 関連の重要ニュース・記事をまとめる場所。Discord 投稿の本体はここに集約される。</p>
+  </header>
+
+  <a href="posts/2026-05-10-html-effectiveness.html" class="card-link">
+    <span class="tag">必読</span>
+    <h2>Anthropic 公式チームが語る、HTML 出力という新常識</h2>
+    <p class="meta">@trq212（Claude Code チーム） / 2026-05-09</p>
+    <p>Markdown は100行を超えると誰も読まない。HTML なら情報密度・可読性・共有性が全部解決する、という Anthropic 公式チームメンバー本人の実体験記事。</p>
+  </a>
+
+  <footer>
+    ai-news-effect · <a href="https://github.com/kenjireds08/ai-news-effect">GitHub</a> · <a href="design-system/">Design System</a>
+  </footer>
+</main>
+</body>
+</html>

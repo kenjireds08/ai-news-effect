@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anthropic 公式チームが語る、HTML 出力という新常識 | ai-news-effect</title>
+<meta name="description" content="Anthropic Claude Code チームメンバー @trq212 が、Markdown より HTML を出力フォーマットに使う理由を5項目で解説。スクール運用への応用も。">
+<meta property="og:title" content="Anthropic 公式チームが語る、HTML 出力という新常識">
+<meta property="og:description" content="Markdown は100行超で読まれない。HTML なら情報密度・可読性・共有性が全部解決する、という Anthropic 公式チームの実体験。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="../assets/images/2026-05-10-html-effectiveness.png">
+<meta property="article:published_time" content="2026-05-10">
+<meta property="article:author" content="@trq212">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #0d1014;
+    --bg-surface: #161a20;
+    --bg-elev: #1f242c;
+    --text-primary: #e8e6df;
+    --text-secondary: #c4c2bc;
+    --text-muted: #8b8f95;
+    --accent-warm: #f5b85f;
+    --accent-warm-dim: rgba(245, 184, 95, 0.12);
+    --accent-coral: #ed7a6d;
+    --accent-link: #7ab8ff;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+    --space-5: 48px;
+    --space-6: 64px;
+    --max-w: 760px;
+    --font-sans: "Inter", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.85;
+    font-feature-settings: "palt";
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: var(--space-5) var(--space-3); }
+  a { color: var(--accent-link); text-decoration: none; border-bottom: 1px dashed transparent; transition: border-color 0.15s; }
+  a:hover { border-bottom-color: var(--accent-link); }
+  .breadcrumb { font-size: 13px; color: var(--text-muted); margin-bottom: var(--space-3); }
+  .breadcrumb a { color: var(--text-muted); border-bottom: 1px dashed var(--text-muted); }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent-warm); margin-bottom: var(--space-1);
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 var(--space-3);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    font-size: 13px; color: var(--text-muted);
+    border-left: 3px solid var(--accent-warm);
+    padding: 4px 0 4px var(--space-2);
+    margin: var(--space-3) 0;
+  }
+  .meta a { color: var(--text-muted); border-bottom: 1px dashed var(--text-muted); }
+  .lead {
+    font-size: 17px;
+    color: var(--text-secondary);
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .lead strong { color: var(--text-primary); }
+  .hero-img {
+    width: 100%;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    margin: var(--space-3) 0 var(--space-5);
+    display: block;
+    background: var(--bg-elev);
+  }
+  h2.section-title {
+    font-size: 22px;
+    margin: var(--space-5) 0 var(--space-2);
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: var(--text-primary);
+  }
+  .num-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-warm);
+    border-radius: 0 var(--r-md) var(--r-md) 0;
+    padding: var(--space-3);
+    margin: var(--space-2) 0;
+  }
+  .num-card-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-warm);
+    color: #1a1208;
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: var(--space-1);
+  }
+  .num-card h3 {
+    display: inline;
+    font-size: 18px;
+    margin: 0;
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+  }
+  .num-card p {
+    margin: var(--space-1) 0 0;
+    color: var(--text-secondary);
+    line-height: 1.85;
+  }
+  .num-card strong { color: var(--text-primary); }
+  .divider {
+    text-align: center;
+    color: var(--text-muted);
+    letter-spacing: 0.5em;
+    margin: var(--space-5) 0 var(--space-3);
+    font-size: 12px;
+  }
+  .conclusion {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin: var(--space-3) 0;
+  }
+  .conclusion strong { color: var(--accent-warm); }
+  .related {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: var(--space-3);
+    margin: var(--space-5) 0;
+  }
+  .related h3 {
+    margin: 0 0 var(--space-1);
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .related ul { margin: 0; padding-left: var(--space-2); }
+  .related li { margin: var(--space-1) 0; font-size: 14px; }
+  .quote {
+    border-left: 4px solid var(--accent-warm);
+    padding: var(--space-1) var(--space-3);
+    background: var(--accent-warm-dim);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    margin: var(--space-3) 0;
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: var(--space-3) 0;
+    margin-top: var(--space-6);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  @media (max-width: 540px) {
+    .container { padding: var(--space-3) var(--space-2); }
+    .num-card { padding: var(--space-2); }
+  }
+</style>
+</head>
+<body>
+<main class="container">
+  <p class="breadcrumb"><a href="../index.html">← 一覧に戻る</a></p>
+
+  <span class="eyebrow">必読 / 思想記事</span>
+  <h1>Anthropic 公式チームが語る、HTML 出力という新常識</h1>
+
+  <div class="meta">
+    元記事: <a href="https://x.com/trq212/status/2052809885763747935" target="_blank" rel="noopener">https://x.com/trq212/status/2052809885763747935</a><br>
+    著者: @trq212（Claude Code チームメンバー） / 公開日: 2026-05-09
+  </div>
+
+  <p class="lead">
+    Claude が出力するファイル形式といえば Markdown が定番だった。けれど Anthropic の Claude Code チームメンバー本人が「もう Markdown はやめて HTML に切り替えている」と書いた記事が公開された。スペック・計画・レポート・コードレビュー、すべてを HTML 1枚で作る運用を勧めている。
+  </p>
+
+  <p class="lead">
+    理由はシンプル。<strong>「Markdown だと100行超えると誰も読まない」</strong>。HTML なら表・SVG・コードブロック・インタラクションを全部1ページに詰め込める。リンク1本で共有できて、スマホでも読める。スクール生にとっても、納品物・仕様書を「読まれる形」で渡すのは大きな差別化になる。
+  </p>
+
+  <img src="../assets/images/2026-05-10-html-effectiveness.png" alt="Markdown から HTML へのフローチャート（情報密度UP・可読性UP・共有しやすい・双方向インタラクション）" class="hero-img">
+
+  <h2 class="section-title">5つのポイント</h2>
+
+  <div class="num-card">
+    <span class="num-card-num">1</span>
+    <h3>なぜ Markdown では足りないか</h3>
+    <p>仕様書を100行書いても、自分以外は誰も読まない。Claude が書いてくれた100行を「読み切る」のはほぼ無理だ。<strong>Markdown はメモには良いが、共有・レビュー・意思決定には情報密度が足りない</strong>。</p>
+  </div>
+
+  <div class="num-card">
+    <span class="num-card-num">2</span>
+    <h3>HTML が解放するもの</h3>
+    <p>表・SVG 図解・コードブロック・スライダー・タブまで全部1ページに収まる。色・スタイル・レスポンシブも自在。<strong>「リッチな成果物」を Claude に作らせる素材として、HTML は今の最適解</strong>。</p>
+  </div>
+
+  <div class="num-card">
+    <span class="num-card-num">3</span>
+    <h3>使いどころは多い</h3>
+    <p>仕様書・実装計画、PR のコードレビュー解説、技術調査レポート、デザインプロト、30件のチケット並べ替え UI まで。<strong>「使い捨ての専用ツールを HTML 1枚で作る」</strong>という発想が日々の作業を変える。</p>
+  </div>
+
+  <div class="num-card">
+    <span class="num-card-num">4</span>
+    <h3>著者からの警告</h3>
+    <p>記事末尾に重要な一文がある。「これを <code>/html</code> スキルに変換しないでほしい」。<strong>Claude にプロンプトで都度頼むのが本来の姿</strong>で、ガチガチに自動化してしまうと使い分けの感覚が育たないと釘を刺している。</p>
+  </div>
+
+  <div class="num-card">
+    <span class="num-card-num">5</span>
+    <h3>ぱるぷんてとしての応用</h3>
+    <p>今後 #ai新着情報 への投稿は、本文サマリ + HTML リンクの形にしていく予定。詳細・図解・スマホ対応はすべて HTML 側に任せる。<strong>スクール上級コースの教材も、スライドではなく HTML 1枚で配る方向で動く</strong>。</p>
+  </div>
+
+  <div class="divider">─────</div>
+
+  <p class="conclusion">100行 Markdown を書きそうになった瞬間が、HTML に切り替える合図。</p>
+  <p class="conclusion">読まれない仕様書はもう作らない、<strong>というスタート</strong>。</p>
+
+  <div class="related">
+    <h3>関連リンク</h3>
+    <ul>
+      <li>サンプル集: <a href="https://thariqs.github.io/html-effectiveness/" target="_blank" rel="noopener">thariqs.github.io/html-effectiveness</a>（@trq212 が公開している実例集）</li>
+      <li>双方向プレイグラウンド記事: <a href="https://x.com/trq212/status/2017024445244924382" target="_blank" rel="noopener">@trq212 のプレイグラウンド投稿</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <a href="../index.html">ai-news-effect</a> · 未来AI学院・ぱるぷんてスクール
+  </footer>
+</main>
+</body>
+</html>
