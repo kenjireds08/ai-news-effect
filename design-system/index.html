@@ -5,270 +5,115 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Design System | ai-news-effect</title>
-<meta name="description" content="未来AI学院 / ぱるぷんてスクール AI ニュース HTML サイトのデザインシステム雛形。">
+<meta name="description" content="ai-news-effect のデザインシステム雛形。色・タイポ・コンポーネント。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
 <style>
-  :root {
-    --bg-base: #0d1014;
-    --bg-surface: #161a20;
-    --bg-elev: #1f242c;
-    --bg-card: rgba(255, 255, 255, 0.04);
-    --text-primary: #e8e6df;
-    --text-secondary: #c4c2bc;
-    --text-muted: #8b8f95;
-    --accent-warm: #f5b85f;
-    --accent-warm-dim: rgba(245, 184, 95, 0.12);
-    --accent-coral: #ed7a6d;
-    --accent-link: #7ab8ff;
-    --accent-success: #7fc97f;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.18);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
-    --r-sm: 8px;
-    --r-md: 14px;
-    --r-lg: 20px;
-    --space-1: 8px;
-    --space-2: 16px;
-    --space-3: 24px;
-    --space-4: 32px;
-    --space-5: 48px;
-    --space-6: 64px;
-    --max-w: 760px;
-    --font-sans: "Inter", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg-base);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    line-height: 1.75;
-    font-feature-settings: "palt";
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .container {
-    max-width: var(--max-w);
-    margin: 0 auto;
-    padding: var(--space-5) var(--space-3);
-  }
-
-  h1, h2, h3, h4 {
-    font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: -0.01em;
-    color: var(--text-primary);
-  }
-
-  h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 var(--space-3); }
-  h2 { font-size: clamp(22px, 3.5vw, 28px); margin: var(--space-5) 0 var(--space-2); }
-  h3 { font-size: 18px; margin: var(--space-3) 0 var(--space-1); }
-
-  p { margin: 0 0 var(--space-2); color: var(--text-secondary); }
-
-  a { color: var(--accent-link); text-decoration: none; border-bottom: 1px dashed transparent; transition: border-color 0.15s; }
-  a:hover { border-bottom-color: var(--accent-link); }
-
-  code {
-    font-family: var(--font-mono);
-    font-size: 0.92em;
-    background: var(--bg-elev);
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: var(--accent-warm);
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: var(--space-5) 0;
-  }
-
-  /* === Components === */
-
-  .eyebrow {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent-warm);
-    margin-bottom: var(--space-1);
-  }
-
-  .meta {
-    display: flex;
-    flex-wrap: wrap;
+  /* デザインシステム専用の補助スタイル（カラースウォッチ等） */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: var(--space-2);
-    font-size: 13px;
-    color: var(--text-muted);
-    border-left: 3px solid var(--accent-warm);
-    padding: 4px 0 4px var(--space-2);
-    margin: var(--space-2) 0 var(--space-3);
-  }
-
-  .meta a { color: var(--text-muted); border-bottom: 1px dashed var(--text-muted); }
-
-  .card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r-md);
-    padding: var(--space-3);
     margin: var(--space-2) 0;
   }
-
-  .card-link {
-    display: block;
-    background: var(--bg-surface);
+  .swatch {
     border: 1px solid var(--border);
-    border-radius: var(--r-md);
-    padding: var(--space-3);
-    margin: var(--space-2) 0;
-    color: inherit;
-    border-bottom: 1px solid var(--border);
-    transition: border-color 0.15s, background 0.15s, transform 0.15s;
-  }
-  .card-link:hover {
-    border-color: var(--border-strong);
-    background: var(--bg-elev);
-    transform: translateY(-1px);
-  }
-
-  .card-title { font-size: 18px; font-weight: 700; margin: 0 0 var(--space-1); color: var(--text-primary); }
-  .card-desc { font-size: 14px; color: var(--text-muted); margin: 0; }
-
-  .tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: var(--accent-warm-dim);
-    color: var(--accent-warm);
-    margin-right: 6px;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 10px 18px;
     border-radius: var(--r-sm);
-    background: var(--accent-warm);
-    color: #1a1208;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
-  .btn:hover { transform: translateY(-1px); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border-strong);
-  }
-
-  .quote {
-    border-left: 4px solid var(--accent-warm);
-    padding: var(--space-1) var(--space-3);
-    background: var(--accent-warm-dim);
-    border-radius: 0 var(--r-sm) var(--r-sm) 0;
-    margin: var(--space-3) 0;
-    font-style: italic;
-    color: var(--text-secondary);
-  }
-
-  /* Numbered cards (5項目用) */
-  .num-card {
+    padding: var(--space-2);
     background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent-warm);
-    border-radius: 0 var(--r-md) var(--r-md) 0;
-    padding: var(--space-3);
-    margin: var(--space-2) 0;
-    position: relative;
-  }
-  .num-card-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--accent-warm);
-    color: #1a1208;
-    font-weight: 700;
-    font-size: 14px;
-    margin-right: var(--space-1);
-  }
-  .num-card h3 {
-    display: inline-block;
-    margin: 0 0 var(--space-1);
-    vertical-align: middle;
-  }
-  .num-card p { margin: var(--space-1) 0 0; }
-
-  /* Hero image (記事画像用) */
-  .hero-img {
-    width: 100%;
-    border-radius: var(--r-md);
-    border: 1px solid var(--border);
-    margin: var(--space-3) 0;
-    background: var(--bg-elev);
-  }
-
-  /* Footer */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: var(--space-3) 0;
-    margin-top: var(--space-6);
-    font-size: 13px;
-    color: var(--text-muted);
-    text-align: center;
-  }
-
-  /* Section divider */
-  .divider {
-    text-align: center;
-    color: var(--text-muted);
-    letter-spacing: 0.5em;
-    margin: var(--space-4) 0;
     font-size: 12px;
+    box-shadow: var(--shadow-sm);
   }
-
-  /* Responsive tweaks */
-  @media (max-width: 540px) {
-    .container { padding: var(--space-3) var(--space-2); }
-    .num-card { padding: var(--space-2); }
+  .swatch-color {
+    height: 56px;
+    border-radius: 6px;
+    margin-bottom: var(--space-1);
+    border: 1px solid var(--border);
   }
+  .swatch-name { font-weight: 600; color: var(--text-primary); margin: 0 0 2px; }
+  .swatch-value { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; margin: 0; }
 </style>
 </head>
 <body>
 <main class="container">
+  <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
+
   <span class="eyebrow">Design System</span>
   <h1>ai-news-effect / デザインシステム</h1>
-  <p>未来AI学院 / ぱるぷんてスクール向け AI ニュース・記事要約サイトの色・タイポ・コンポーネント雛形。各記事の HTML を生成する際にこのページを参照する。</p>
+  <p>未来AI学院 / ぱるぷんてスクール向け AI ニュース・記事要約サイトの色・タイポ・コンポーネント雛形。各記事の HTML を生成する際にこのページと <code>DESIGN.md</code> を参照する。</p>
 
   <h2>カラーパレット</h2>
-  <div class="card">
-    <p><code>--bg-base</code> #0d1014 / <code>--bg-surface</code> #161a20 / <code>--bg-elev</code> #1f242c</p>
-    <p><code>--text-primary</code> #e8e6df / <code>--text-muted</code> #8b8f95</p>
-    <p><code>--accent-warm</code> #f5b85f（暖かいオレンジ・主要アクセント） / <code>--accent-coral</code> #ed7a6d / <code>--accent-link</code> #7ab8ff</p>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#faf7f0;"></div>
+      <p class="swatch-name">bg-base</p>
+      <p class="swatch-value">#faf7f0</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#ffffff;"></div>
+      <p class="swatch-name">bg-surface</p>
+      <p class="swatch-value">#ffffff</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#fdf8e8;"></div>
+      <p class="swatch-name">bg-elev</p>
+      <p class="swatch-value">#fdf8e8</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1f1a14;"></div>
+      <p class="swatch-name">text-primary</p>
+      <p class="swatch-value">#1f1a14</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#4a4338;"></div>
+      <p class="swatch-name">text-secondary</p>
+      <p class="swatch-value">#4a4338</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#7a7468;"></div>
+      <p class="swatch-name">text-muted</p>
+      <p class="swatch-value">#7a7468</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#c2782a;"></div>
+      <p class="swatch-name">accent-warm</p>
+      <p class="swatch-value">#c2782a</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f5b85f;"></div>
+      <p class="swatch-name">accent-marker</p>
+      <p class="swatch-value">#f5b85f</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1e5da8;"></div>
+      <p class="swatch-name">accent-link</p>
+      <p class="swatch-value">#1e5da8</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#c64b3a;"></div>
+      <p class="swatch-name">accent-coral</p>
+      <p class="swatch-value">#c64b3a</p>
+    </div>
   </div>
 
   <h2>タイポグラフィ</h2>
-  <h1>見出し1（h1）</h1>
-  <h2>見出し2（h2）</h2>
-  <h3>見出し3（h3）</h3>
-  <p>本文サンプル。Markdown が定番だった頃から、AI が出力するファイル形式は今 HTML へ移行している。表・SVG・コードブロック・インタラクションを1ページに詰め込めるからだ。</p>
+  <div class="card">
+    <h1 style="margin: 0 0 var(--space-2);">見出し1（h1）</h1>
+    <h2 style="margin: 0 0 var(--space-2);">見出し2（h2）</h2>
+    <h3 style="margin: 0 0 var(--space-1);">見出し3（h3）</h3>
+    <p>本文サンプル。Markdown が定番だった頃から、AI が出力するファイル形式は今 HTML へ移行している。表・SVG・コードブロック・インタラクションを1ページに詰め込めるからだ。</p>
+    <p style="font-size: 13px; color: var(--text-muted); margin: 0;">補助テキスト（13px / text-muted）</p>
+  </div>
 
-  <h2>引用ブロック（出典・元記事）</h2>
+  <h2>Eyebrow（カテゴリラベル）</h2>
+  <div class="card">
+    <span class="eyebrow">必読 / 思想記事</span>
+    <h3 style="margin-top: 0;">記事タイトルがここに来る</h3>
+  </div>
+
+  <h2>Meta（出典・引用枠）</h2>
   <div class="meta">
     元記事: <a href="https://example.com">https://example.com</a><br>
     著者: 著者名 / 公開日: YYYY-MM-DD
@@ -277,11 +122,12 @@
   <h2>引用 / クォート</h2>
   <blockquote class="quote">この記事を /html スキルに変換しないでほしい。プロンプトから始めて感覚を掴むのが先だ。</blockquote>
 
-  <h2>カード（投稿一覧用）</h2>
+  <h2>Card Link（投稿一覧用）</h2>
   <a href="#" class="card-link">
     <span class="tag">必読</span>
-    <h3 class="card-title">Anthropic 公式チームが語る、HTML 出力という新常識</h3>
-    <p class="card-desc">@trq212 / 2026-05-09 — Markdown は100行を超えると誰も読まない。HTML なら情報密度・可読性・共有性が全部解決する。</p>
+    <h2>Anthropic 公式チームが語る、HTML 出力という新常識</h2>
+    <p class="meta-inline">@trq212 / 2026-05-09</p>
+    <p>Markdown は100行を超えると誰も読まない。HTML なら情報密度・可読性・共有性が全部解決する。</p>
   </a>
 
   <h2>ボタン</h2>
@@ -291,7 +137,7 @@
     <button class="btn btn-ghost">セカンダリ</button>
   </p>
 
-  <h2>ナンバーカード（5項目用）</h2>
+  <h2>Numbered Card（5項目展開用）</h2>
   <div class="num-card">
     <span class="num-card-num">1</span>
     <h3>セクションタイトル</h3>
@@ -303,15 +149,24 @@
     <p>2つ目の項目。5項目記事ならカードを5つ並べる。</p>
   </div>
 
-  <h2>ヒーロー画像</h2>
+  <h2>Hero Image（インフォグラフィック）</h2>
   <div class="card" style="text-align:center;">画像表示エリア（インフォグラフィック / OGP 兼用）</div>
+
+  <h2>Related</h2>
+  <div class="related">
+    <h3>関連リンク</h3>
+    <ul>
+      <li>サンプル集: <a href="#">外部リンクの例</a></li>
+      <li>過去記事: <a href="#">2026-05-09 記事タイトル</a></li>
+    </ul>
+  </div>
 
   <div class="divider">─────</div>
 
-  <p style="text-align:center; color: var(--text-muted);">結びの一言。「<strong>～のスタート</strong>」のような端的な締め。</p>
+  <p class="conclusion">結びの一言。「<strong>～のスタート</strong>」のような端的な締め。</p>
 
   <footer>
-    ai-news-effect / 未来AI学院・ぱるぷんてスクール · <a href="https://github.com/kenjireds08/ai-news-effect">GitHub</a>
+    <a href="/">ai-news-effect</a> · 未来AI学院・ぱるぷんてスクール
   </footer>
 </main>
 </body>
