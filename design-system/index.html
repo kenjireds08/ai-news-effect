@@ -6,34 +6,37 @@
 <meta name="robots" content="noindex">
 <title>Design System | ai-news-effect</title>
 <meta name="description" content="ai-news-effect のデザインシステム雛形。色・タイポ・コンポーネント。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/styles.css">
 <style>
   /* デザインシステム専用の補助スタイル（カラースウォッチ等） */
   .swatch-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: var(--space-2);
-    margin: var(--space-2) 0;
+    margin: var(--space-2) 0 var(--space-4);
   }
   .swatch {
     border: 1px solid var(--border);
-    border-radius: var(--r-sm);
+    border-radius: var(--r-md);
     padding: var(--space-2);
     background: var(--bg-surface);
     font-size: 12px;
     box-shadow: var(--shadow-sm);
   }
   .swatch-color {
-    height: 56px;
-    border-radius: 6px;
+    height: 64px;
+    border-radius: var(--r-sm);
     margin-bottom: var(--space-1);
     border: 1px solid var(--border);
   }
-  .swatch-name { font-weight: 600; color: var(--text-primary); margin: 0 0 2px; }
+  .swatch-name { font-weight: 600; color: var(--text-primary); margin: 0 0 2px; font-size: 13px; }
   .swatch-value { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; margin: 0; }
+  .grad-block {
+    height: 80px;
+    border-radius: var(--r-md);
+    margin: var(--space-2) 0 var(--space-4);
+    border: 1px solid var(--border);
+  }
 </style>
 </head>
 <body>
@@ -41,15 +44,18 @@
   <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
 
   <span class="eyebrow">Design System</span>
-  <h1>ai-news-effect / デザインシステム</h1>
-  <p>未来AI学院 / ぱるぷんてスクール向け AI ニュース・記事要約サイトの色・タイポ・コンポーネント雛形。各記事の HTML を生成する際にこのページと <code>DESIGN.md</code> を参照する。</p>
+  <h1>ai-news-effect / <span class="grad-text">デザインシステム</span></h1>
+  <p class="lead">
+    AI ニュース・記事要約サイトの色・タイポ・コンポーネント雛形。各記事の HTML を生成する際にこのページと <code>DESIGN.md</code> を参照する。
+  </p>
 
   <h2>カラーパレット</h2>
+  <h3>背景・テキスト</h3>
   <div class="swatch-grid">
     <div class="swatch">
-      <div class="swatch-color" style="background:#faf7f0;"></div>
+      <div class="swatch-color" style="background:#faf9f7;"></div>
       <p class="swatch-name">bg-base</p>
-      <p class="swatch-value">#faf7f0</p>
+      <p class="swatch-value">#faf9f7</p>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background:#ffffff;"></div>
@@ -57,69 +63,95 @@
       <p class="swatch-value">#ffffff</p>
     </div>
     <div class="swatch">
-      <div class="swatch-color" style="background:#fdf8e8;"></div>
+      <div class="swatch-color" style="background:#f5f3fa;"></div>
       <p class="swatch-name">bg-elev</p>
-      <p class="swatch-value">#fdf8e8</p>
+      <p class="swatch-value">#f5f3fa</p>
     </div>
     <div class="swatch">
-      <div class="swatch-color" style="background:#1f1a14;"></div>
+      <div class="swatch-color" style="background:#0f0f0f;"></div>
+      <p class="swatch-name">text-heading</p>
+      <p class="swatch-value">#0f0f0f</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1a1a1a;"></div>
       <p class="swatch-name">text-primary</p>
-      <p class="swatch-value">#1f1a14</p>
+      <p class="swatch-value">#1a1a1a</p>
     </div>
     <div class="swatch">
-      <div class="swatch-color" style="background:#4a4338;"></div>
+      <div class="swatch-color" style="background:#4a4a4a;"></div>
       <p class="swatch-name">text-secondary</p>
-      <p class="swatch-value">#4a4338</p>
+      <p class="swatch-value">#4a4a4a</p>
     </div>
     <div class="swatch">
-      <div class="swatch-color" style="background:#7a7468;"></div>
+      <div class="swatch-color" style="background:#7a7a7a;"></div>
       <p class="swatch-name">text-muted</p>
-      <p class="swatch-value">#7a7468</p>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background:#c2782a;"></div>
-      <p class="swatch-name">accent-warm</p>
-      <p class="swatch-value">#c2782a</p>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background:#f5b85f;"></div>
-      <p class="swatch-name">accent-marker</p>
-      <p class="swatch-value">#f5b85f</p>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background:#1e5da8;"></div>
-      <p class="swatch-name">accent-link</p>
-      <p class="swatch-value">#1e5da8</p>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background:#c64b3a;"></div>
-      <p class="swatch-name">accent-coral</p>
-      <p class="swatch-value">#c64b3a</p>
+      <p class="swatch-value">#7a7a7a</p>
     </div>
   </div>
 
+  <h3>アクセント</h3>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#8b5cf6;"></div>
+      <p class="swatch-name">accent-primary</p>
+      <p class="swatch-value">#8b5cf6 / パープル</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#ec4899;"></div>
+      <p class="swatch-name">accent-secondary</p>
+      <p class="swatch-value">#ec4899 / ピンク</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#06b6d4;"></div>
+      <p class="swatch-name">accent-tertiary</p>
+      <p class="swatch-value">#06b6d4 / シアン</p>
+    </div>
+  </div>
+
+  <h3>グラデーション</h3>
+  <p style="font-size: 13px; color: var(--text-muted);">grad-heading（見出し用）</p>
+  <div class="grad-block" style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);"></div>
+  <p style="font-size: 13px; color: var(--text-muted);">grad-border（カードホバー時の縦線・引用バー）</p>
+  <div class="grad-block" style="background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);"></div>
+  <p style="font-size: 13px; color: var(--text-muted);">grad-divider（区切り線・両端フェード）</p>
+  <div class="grad-block" style="background: linear-gradient(90deg, transparent, #8b5cf6, #ec4899, transparent); height: 2px; margin-bottom: var(--space-4);"></div>
+
+  <hr class="divider">
+
   <h2>タイポグラフィ</h2>
   <div class="card">
-    <h1 style="margin: 0 0 var(--space-2);">見出し1（h1）</h1>
-    <h2 style="margin: 0 0 var(--space-2);">見出し2（h2）</h2>
-    <h3 style="margin: 0 0 var(--space-1);">見出し3（h3）</h3>
-    <p>本文サンプル。Markdown が定番だった頃から、AI が出力するファイル形式は今 HTML へ移行している。表・SVG・コードブロック・インタラクションを1ページに詰め込めるからだ。</p>
+    <h1 style="margin: 0 0 var(--space-2);">見出し1（h1 / Noto Serif JP）</h1>
+    <h2 style="margin: 0 0 var(--space-2);">見出し2（h2 / Noto Serif JP）</h2>
+    <h3 style="margin: 0 0 var(--space-1);">見出し3（h3 / Inter）</h3>
+    <p>本文サンプル。Markdown が定番だった頃から、AI が出力するファイル形式は今 HTML へ移行している。表・SVG・コードブロック・インタラクションを1ページに詰め込めるからだ。<strong>太字キーフレーズはマーカー風の強調</strong>になる。</p>
     <p style="font-size: 13px; color: var(--text-muted); margin: 0;">補助テキスト（13px / text-muted）</p>
   </div>
+
+  <h3>グラデーションテキスト</h3>
+  <p>記事タイトルなど重要箇所のみ <span class="grad-text" style="font-family: var(--font-serif); font-weight: 700; font-size: 28px;">グラデーションを適用</span> する。</p>
+
+  <hr class="divider">
 
   <h2>Eyebrow（カテゴリラベル）</h2>
   <div class="card">
     <span class="eyebrow">必読 / 思想記事</span>
-    <h3 style="margin-top: 0;">記事タイトルがここに来る</h3>
+    <h3 style="margin-top: var(--space-1);">記事タイトルがここに来る</h3>
+  </div>
+
+  <h2>Tag</h2>
+  <div class="card">
+    <span class="tag">必読</span>
+    <span class="tag tag-pink">新機能</span>
+    <span class="tag tag-cyan">ツール</span>
   </div>
 
   <h2>Meta（出典・引用枠）</h2>
   <div class="meta">
-    元記事: <a href="https://example.com">https://example.com</a><br>
-    著者: 著者名 / 公開日: YYYY-MM-DD
+    <strong style="background:none;">元記事:</strong> <a href="https://example.com">https://example.com</a><br>
+    <strong style="background:none;">著者:</strong> 著者名 &nbsp;/&nbsp; <strong style="background:none;">公開日:</strong> YYYY-MM-DD
   </div>
 
-  <h2>引用 / クォート</h2>
+  <h2>Quote（引用）</h2>
   <blockquote class="quote">この記事を /html スキルに変換しないでほしい。プロンプトから始めて感覚を掴むのが先だ。</blockquote>
 
   <h2>Card Link（投稿一覧用）</h2>
@@ -127,8 +159,28 @@
     <span class="tag">必読</span>
     <h2>Anthropic 公式チームが語る、HTML 出力という新常識</h2>
     <p class="meta-inline">@trq212 / 2026-05-09</p>
-    <p>Markdown は100行を超えると誰も読まない。HTML なら情報密度・可読性・共有性が全部解決する。</p>
+    <p>Markdown は100行を超えると誰も読まない。HTML なら情報密度・可読性・共有性が全部解決する、という Anthropic 公式チームの実体験。</p>
   </a>
+
+  <h2>Numbered Card（5項目展開用）</h2>
+  <div class="num-grid">
+    <div class="num-card">
+      <span class="num">1</span>
+      <h3>セクションタイトル</h3>
+      <p>導入文と <strong>太字キーフレーズ</strong> を組み合わせた解説文。グリッドで2列に並ぶ。</p>
+    </div>
+    <div class="num-card">
+      <span class="num">2</span>
+      <h3>セクションタイトル</h3>
+      <p>2つ目の項目。5項目記事ならカードを5つ並べ、5番目だけ自動で2カラム幅になる。</p>
+    </div>
+  </div>
+
+  <h2>Conclusion（結び）</h2>
+  <div class="conclusion">
+    <h3>結びの一言</h3>
+    <p>記事の最後に置く要点まとめブロック。<strong>太字でキーメッセージを強調</strong>する形が定番。</p>
+  </div>
 
   <h2>ボタン</h2>
   <p>
@@ -136,21 +188,6 @@
     &nbsp;
     <button class="btn btn-ghost">セカンダリ</button>
   </p>
-
-  <h2>Numbered Card（5項目展開用）</h2>
-  <div class="num-card">
-    <span class="num-card-num">1</span>
-    <h3>セクションタイトル</h3>
-    <p>導入文と <strong>太字キーフレーズ</strong> を組み合わせた解説文。Discord 投稿のフォーマットを HTML 化する場合、この形式で並べる。</p>
-  </div>
-  <div class="num-card">
-    <span class="num-card-num">2</span>
-    <h3>セクションタイトル</h3>
-    <p>2つ目の項目。5項目記事ならカードを5つ並べる。</p>
-  </div>
-
-  <h2>Hero Image（インフォグラフィック）</h2>
-  <div class="card" style="text-align:center;">画像表示エリア（インフォグラフィック / OGP 兼用）</div>
 
   <h2>Related</h2>
   <div class="related">
@@ -161,9 +198,15 @@
     </ul>
   </div>
 
-  <div class="divider">─────</div>
+  <h2>Code</h2>
+  <p>インラインの <code>const x = 1</code> はパープルの淡背景。コードブロックは以下：</p>
+  <pre><code>// JavaScript example
+const colors = {
+  primary: '#8b5cf6',
+  secondary: '#ec4899',
+};</code></pre>
 
-  <p class="conclusion">結びの一言。「<strong>～のスタート</strong>」のような端的な締め。</p>
+  <hr class="divider">
 
   <footer>
     <a href="/">ai-news-effect</a>
