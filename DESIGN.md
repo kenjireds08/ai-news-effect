@@ -116,7 +116,9 @@
 |------|------|
 | すべての要素（本文・h2・h3・lead・hero-img・compare-table・num-grid・card-link・conclusion・related・footer） | コンテナ内 100% 幅・左端揃え |
 
-**比較表のスマホ対応:** `.compare-table` は `min-width: 480px` を設定。スマホ幅でこれを下回ると `.compare-table-wrap` の `overflow-x: auto` で横スクロールになる。
+**比較表のスマホ対応:** `.compare-table` は `min-width: 720px` を設定（+ 各セル `min-width: 140px`）。スマホ幅でこれを下回ると `.compare-table-wrap` の `overflow-x: auto` で横スクロールになるが、横スクロール時も各カラムに十分なスペースが残る。
+
+**過去案（廃止）:** `min-width: 480px` は 4 列のテーブルでカラムが詰まりすぎる問題があり、2026-05-11 に 720px へ引き上げ。
 
 **過去案（廃止）:** 本文 720px / wide 要素 1100px の grid 切替は左端ズレが見栄え悪く 2026-05-10 に廃止。
 

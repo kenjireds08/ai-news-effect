@@ -429,13 +429,18 @@ pre code {
 
 .compare-table {
   width: 100%;
-  min-width: 480px; /* スマホでこれを下回ると横スクロール */
+  min-width: 720px; /* スマホでこれを下回ると横スクロール。720px で 4 列でも各カラムに余裕 */
   border-collapse: collapse;
   font-size: 14px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   overflow: hidden;
+}
+
+.compare-table th,
+.compare-table td {
+  min-width: 140px; /* 各セル最低幅。カラム数が増えても潰れにくい */
 }
 
 .compare-table thead {
