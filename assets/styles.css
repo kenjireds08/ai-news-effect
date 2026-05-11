@@ -371,6 +371,10 @@ pre code {
   .num-grid > .num-card:nth-child(5) {
     grid-column: auto;
   }
+  /* 子要素ちょうど4個のときは 2カラム（最後の1枚が寂しくならないように） */
+  .num-grid:has(> .num-card:nth-child(4):last-child) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .num-card {
