@@ -1,0 +1,12 @@
+# Discord 投稿スニペット（第4記事: Claude Code Review 150万円事故）
+# このファイルは新規追加すると GitHub Actions が自動投稿します。
+# # で始まる行はコメントとして除去されます。
+
+# 📰 Claude Code Review で1日150万円。AI に push まで任せた事故の全貌
+
+> 元記事: https://x.com/gogo_tanaka/status/2053373034111856941
+> 著者: 田中さん（@gogo_tanaka） / 公開日: 2026-05-10
+
+Anthropic 公式の **Claude Code Review**（PR 自動レビュー・**従量課金 $25.81/レビュー**）が暴走し、ある組織で**1日で約150万円**が消えた事故。原因は「AI が修正 → push → また自動レビュー」の無限ループ + Stacked PR への波及。AI に判断と push まで任せる怖さと、**5つの対策**を当事者本人が公開している。
+
+詳細はこちら 👉 https://ai-news-effect.pages.dev/posts/2026-05-11-claude-code-review-incident.html

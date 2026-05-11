@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Claude Code Review で1日150万円。AI に push まで任せた事故の全貌と、5つの対策 | ai-news-effect</title>
+<meta name="description" content="Anthropic 公式の Claude Code Review が暴走し、1日で約150万円を溶かした事故。AI エージェントが push を繰り返して無限ループ。原因・5つの対策・スクール生への教訓を整理。">
+<meta property="og:title" content="Claude Code Review で1日150万円。AI に push まで任せた事故の全貌と、5つの対策">
+<meta property="og:description" content="平均 $25.81/レビューが Stacked PR と AI 自動 push で無限ループ。当事者の告白から学ぶ AI コストガードレール。Claude Code（CLI版）と Claude Code Review（GitHub版）の違いも整理。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ai-news-effect.pages.dev/posts/2026-05-11-claude-code-review-incident.html">
+<meta property="og:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-11-claude-code-review-incident.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:site_name" content="ai-news-effect">
+<meta property="article:published_time" content="2026-05-11">
+<meta property="article:author" content="@gogo_tanaka">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-11-claude-code-review-incident.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<main class="container">
+  <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
+
+  <span class="eyebrow">事故事例 / Claude Code Review</span>
+  <h1>Claude Code Review で1日150万円。<br>AI に push まで任せた事故の全貌と、5つの対策</h1>
+
+  <div class="meta">
+    <strong style="background:none; font-weight:700;">元記事:</strong> <a href="https://x.com/gogo_tanaka/status/2053373034111856941" target="_blank" rel="noopener">x.com/gogo_tanaka/status/2053373034111856941</a><br>
+    <strong style="background:none; font-weight:700;">著者:</strong> 田中さん（@gogo_tanaka / supateam.com 運営） &nbsp;/&nbsp; <strong style="background:none; font-weight:700;">公開日:</strong> 2026-05-10
+  </div>
+
+  <p class="lead">
+    Anthropic 公式の <strong>Claude Code Review</strong>（GitHub PR 自動レビュー機能・<strong>従量課金</strong>）が暴走し、ある組織で<strong>1日で約150万円（$10,000+）</strong>のコストが発生した事故が報告された。当事者である田中さん（supateam.com 運営）が事故の構造と再発防止策を生々しく公開している。
+  </p>
+
+  <p class="lead">
+    一言で言うと、<strong>「Claude Code Review → AI エージェントが対応 → push → また Claude Code Review」</strong>の無限ループが Stacked PR と組み合わさり、業務終了後も AI 同士が議論し続けて課金が積み上がった。返金リクエスト中。
+  </p>
+
+  <div class="hero-img-wrap">
+    <img src="/assets/images/2026-05-11-claude-code-review-incident.png" alt="Claude Code Review と AI エージェントが無限ループを作り150万円のコストが発生した構造を示す手書きノート風のインフォグラフィック" class="hero-img">
+  </div>
+
+  <h2>まず混同しがちな2つを整理</h2>
+
+  <p>同じ「Claude Code」という名前でも、別サービス。今回の事故は <strong>後者</strong> で発生した。</p>
+
+  <div class="compare-table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>サービス</th>
+        <th>動く場所</th>
+        <th>課金方式</th>
+        <th>今回の事故</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Claude Code</strong>（CLI 版）</td>
+        <td>ターミナル・ローカル</td>
+        <td>Pro / Max <strong>サブスク定額</strong></td>
+        <td>関係なし</td>
+      </tr>
+      <tr>
+        <td><strong>Claude Code Review</strong></td>
+        <td>GitHub の PR 上（GitHub Action 系）</td>
+        <td><strong>従量課金</strong>（$25.81 / レビュー）</td>
+        <td>こちらで発生</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>何が起きたのか（無限ループの構造）</h2>
+
+  <p>原因は単一ではなく、複数の設定とフローが噛み合った結果のループだった。</p>
+
+  <div class="num-grid">
+    <div class="num-card">
+      <span class="num">1</span>
+      <h3>Claude Code Review が走る</h3>
+      <p>GitHub の PR に対し、push のたびに自動レビューがトリガーされる設定だった。<strong>1レビュー約 $25.81</strong>。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">2</span>
+      <h3>AI がレビュー対応を判断 → 修正 → push</h3>
+      <p>ローカルの AI エージェント（Codex / Claude 等）に、レビューコメントの対応要否判断と修正・push まで任せていた。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">3</span>
+      <h3>push のたびに再レビュー</h3>
+      <p>2 の push が再び 1 の Claude Code Review をトリガー。コメント追加 → AI 対応 → push を繰り返す。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">4</span>
+      <h3>Stacked PR で N 倍に増幅</h3>
+      <p>上流 PR を修正すると後続 PR にも <strong>rebase / force push が波及</strong>。1 PR で済むレビューが N 個の PR に拡散。</p>
+    </div>
+  </div>
+
+  <p>結果、業務終了後も AI 同士が「指摘 → 修正 → 再指摘」のループを止めず、一晩で <strong>$10,000 超</strong> に到達。クレカ決済ログを Slack に流していたチームメンバーが気付いて止めた。</p>
+
+  <h2>とりあえずこれをやっておけ（5つの対策）</h2>
+
+  <div class="checklist">
+    <h3>当事者発・最優先の5項目</h3>
+    <ul>
+      <li><strong>Claude Team の組織月間利用上限設定</strong>（最後の砦。Enterprise なら月次以外にも細かく設定可能）</li>
+      <li><strong>Claude Code Review の per-service limit</strong>を設定（特定サービスでの暴走を阻止）</li>
+      <li><strong>Claude Code Review のトリガーを「push ごと」→「1回」に変更</strong>（最重要・最も効果あり）</li>
+      <li><strong>クレカ決済ログを Slack 等に流して常時監視</strong>（今回はこれで気づいた）</li>
+      <li><strong>ガードレールとハーネスの運用を徹底</strong>（ルール整備＋自動監視）</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">📍 設定 URL</span>
+    <p>上限・per-service limit・トリガー変更はすべて <a href="https://claude.ai/admin-settings/usage" target="_blank" rel="noopener">claude.ai/admin-settings/usage</a> から設定可能（Team / Enterprise プラン）。</p>
+  </div>
+
+  <h2>4つの反省点（当事者発）</h2>
+
+  <div class="num-grid">
+    <div class="num-card">
+      <span class="num">1</span>
+      <h3>push ごとレビューを軽視</h3>
+      <p>「便利だから」で push トリガーのまま運用。変更のたびにフルレビューが走るリスクを過小評価していた。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">2</span>
+      <h3>Stacked PR との相性を見誤った</h3>
+      <p>Stacked PR は PR 分割に有効だが、上流修正で<strong>後続全てに rebase が波及</strong>。1レビューが N レビューに化ける構造に気付かなかった。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">3</span>
+      <h3>AI に判断・push まで任せた</h3>
+      <p>「コメント整理 → 対応判断 → 修正 → push → 監視」を AI に丸投げ。<strong>最終判断は人間が下す</strong>べきだった。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">4</span>
+      <h3>組織上限を最後の砦に</h3>
+      <p>$10,000 の上限は「最後の砦としては高すぎた」。<strong>もっと手前で止まるガードレール</strong>（per-service / 日次 / 通知）が必要。</p>
+    </div>
+  </div>
+
+  <h2>名言（当事者の言葉）</h2>
+
+  <blockquote class="quote">
+    ローカルの AI エージェントはサブスクで使っていたため、今この瞬間に API コストが増えているという感覚が薄かったです。一方で、GitHub 側で動いている Claude Code Review は Anthropic の組織利用量を消費していました。
+  </blockquote>
+
+  <blockquote class="quote">
+    ローカルの体感コストと、実際に課金されているコストにズレがある状況で、従量課金の AI が長時間実行される状態を作り出してしまいました。
+  </blockquote>
+
+  <blockquote class="quote">
+    今まではAIをとにかく使わせるフェーズだったので各種エージェント比較的安価での提供でしたが、もう良さを知った僕らからしっかりビジネスとしてお金をとってくるフェーズになると思います。
+  </blockquote>
+
+  <h2>スクール生・受講生への教訓</h2>
+
+  <p>この事故は「他人事」ではない。AI エージェントを業務に組み込むなら、誰もが通る検討事項。</p>
+
+  <div class="checklist">
+    <h3>持ち帰るべき4つの原則</h3>
+    <ul>
+      <li><strong>サブスクと従量課金は別の感覚で扱う</strong>。月額に慣れると従量の体感が鈍る</li>
+      <li><strong>AI に「判断 → push」までフルオートで任せない</strong>。最終判断は人間。Codex CLI `/codex-review` のように手動 approve まで止まる設計が安全</li>
+      <li><strong>業務終了時に AI を必ず止める</strong>。「動かしっぱなし」が一晩で破産を生む</li>
+      <li><strong>コストガードレールは複層化</strong>（組織上限・サービス上限・日次通知・決済ログ監視）</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">💡 ちーけんさん的補足</span>
+    <p>普段使っているのは <strong>Claude Code（CLI 版・サブスク定額）</strong>なので、この事故の直接被害は受けない。ただし「AI に push 権限を渡す」運用は将来必ず候補に上がる。今のうちに「最終判断は人間」「ガードレール複層化」の原則を頭に入れておく価値あり。</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="conclusion">
+    <h3>結びの一言</h3>
+    <p>AI を使った開発の利便性を取りすぎると、安全性とコスト面のガードレールが疎かになる。<strong>「サブスクの体感」と「従量の実費」のズレ</strong>が今回の事故の本質。AI に push まで任せる前に、必ず「人間が最終承認する設計」と「複層のコスト上限」を仕込んでおく。<strong>150万円という痛みを、自分の組織で繰り返さない</strong>ために。</p>
+  </div>
+
+  <div class="related">
+    <h3>関連リンク</h3>
+    <ul>
+      <li>X 原文: <a href="https://x.com/gogo_tanaka/status/2053373034111856941" target="_blank" rel="noopener">x.com/gogo_tanaka/status/2053373034111856941</a></li>
+      <li>Claude Team 設定: <a href="https://claude.ai/admin-settings/usage" target="_blank" rel="noopener">claude.ai/admin-settings/usage</a></li>
+      <li>田中さんの会社: <a href="https://supateam.com/" target="_blank" rel="noopener">supateam.com</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <a href="/">ai-news-effect</a>
+  </footer>
+</main>
+</body>
+</html>
