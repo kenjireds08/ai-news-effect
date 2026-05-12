@@ -2,23 +2,38 @@
 
 ai-news-effect の記事を Discord に**自動投稿**するためのテキストファイル置き場。
 
-## 2 段階運用（Staging → 本番）
+## 現状の運用（スクール開始前・2026-05-13 時点）
 
-| 配置先 | 投稿先 | 用途 |
-|--------|--------|------|
-| `discord-snippets/staging/YYYY-MM-DD-XXX.txt` | 🧪 **TEST Webhook**（ちーけん専用 Discord）| 本番投稿前の最終確認 |
-| `discord-snippets/YYYY-MM-DD-XXX.txt`（直下） | 🚀 **本番 Webhook**（未来AI学院 #ai新着情報）| 受講生に届ける |
+| 配置先 | 投稿先 |
+|--------|--------|
+| `discord-snippets/YYYY-MM-DD-XXX.txt`（直下） | ちーけん個人サーバーの確認用チャンネル（`DISCORD_AI_NEWS_WEBHOOK_URL`）|
+
+未来AI学院の `#ai新着情報` への Webhook はまだ設定していないため、いまは **ちーけん本人の確認場所** に届くのみ。ちーけんが内容確認 → 必要なら未来AI学院チャンネルへ手動で送る運用。
 
 ## 仕組み
 
 1. 新しい記事を `posts/` に作成 + Cloudflare Pages デプロイ
-2. **まず `discord-snippets/staging/YYYY-MM-DD-XXX.txt`** を新規追加
-3. `git push` → GitHub Actions が **TEST Discord** に投稿
-4. ちーけんが TEST サーバーで内容・OGP カードを確認
-5. OK なら **`discord-snippets/YYYY-MM-DD-XXX.txt`（直下）** を新規追加（中身は staging と同じで OK）
-6. `git push` → GitHub Actions が **本番 #ai新着情報** に投稿
+2. このディレクトリに `YYYY-MM-DD-記事キー.txt` を**新規追加**
+3. `git push` すると `.github/workflows/discord-post.yml` が起動
+4. Discord Webhook で自動投稿される
 
-**重要**: 既存ファイルの編集は無視されます（再投稿防止）。新規追加のみが投稿対象。staging のファイルを後で消す必要はありません（履歴として残してよい）。
+**重要**: 既存ファイルの編集は無視されます（再投稿防止）。新規追加のみが投稿対象。
+
+## 将来の運用（未来AI学院 Webhook 設定後・スクール開始後を想定）
+
+`staging/` サブディレクトリの仕組みを再活用して 2 段階運用に切り替える予定。
+
+| 配置先 | 投稿先 |
+|--------|--------|
+| `discord-snippets/staging/YYYY-MM-DD-XXX.txt` | ちーけん個人サーバー（事前確認用）|
+| `discord-snippets/YYYY-MM-DD-XXX.txt`（直下） | **未来AI学院 `#ai新着情報`**（本番・受講生に届ける）|
+
+切替手順:
+1. 未来AI学院 `#ai新着情報` に Webhook を作成
+2. ai-news-effect の Secret `DISCORD_AI_NEWS_SCHOOL_WEBHOOK_URL` を新規追加（または既存名を流用）
+3. `.github/workflows/discord-post.yml` の振り分けロジックを有効化（実装は既に下書き済み）
+
+**現時点では `staging/` サブディレクトリは使いません**（`DISCORD_AI_NEWS_TEST_WEBHOOK_URL` が未設定だとエラーになる）。
 
 ## ファイル名規則
 

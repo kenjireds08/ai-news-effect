@@ -3,13 +3,18 @@ name: Discord Post (新着記事の自動投稿)
 # discord-snippets/*.txt が新規追加されたら、Discord Webhook で自動投稿する。
 # 既存ファイルの編集は無視（再投稿防止）。
 #
-# Staging / 本番の振り分け:
-#   - discord-snippets/staging/YYYY-MM-DD-XXX.txt → TEST Webhook（ちーけん確認用）
-#   - discord-snippets/YYYY-MM-DD-XXX.txt          → 本番 Webhook（未来AI学院 #ai新着情報）
+# 現状（2026-05-13 / スクール開始前）:
+#   - discord-snippets/*.txt（直下）→ DISCORD_AI_NEWS_WEBHOOK_URL
+#     ↑ 実態は「ちーけん個人サーバーの確認用チャンネル」。
+#       ちーけんが内容確認 → 必要なら未来AI学院に手動で転送する運用。
+#
+# 将来（未来AI学院 Webhook 設定後・スクール開始後を想定）:
+#   - discord-snippets/staging/*.txt → DISCORD_AI_NEWS_TEST_WEBHOOK_URL（ちーけん個人）
+#   - discord-snippets/*.txt（直下） → DISCORD_AI_NEWS_WEBHOOK_URL（未来AI学院に書き換え）
 #
 # 必要な GitHub Secrets:
-#   - DISCORD_AI_NEWS_WEBHOOK_URL:      本番 Discord Webhook URL
-#   - DISCORD_AI_NEWS_TEST_WEBHOOK_URL: TEST Discord Webhook URL（staging 用）
+#   - DISCORD_AI_NEWS_WEBHOOK_URL:      現状は ちーけん個人サーバー、将来は未来AI学院に切り替え
+#   - DISCORD_AI_NEWS_TEST_WEBHOOK_URL: 未設定。スクール開始後に追加予定（staging 切替時に必要）
 
 on:
   push:
