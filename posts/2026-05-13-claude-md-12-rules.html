@@ -107,50 +107,50 @@
 
   <div class="num-grid">
     <div class="num-card">
-      <span class="num">5</span>
-      <h3>Use the model only for judgment calls</h3>
+      <span class="num">1</span>
+      <h3>Rule 5 — Use the model only for judgment calls</h3>
       <p>判断（分類・要約・抽出）には使う。<strong>決定論的処理</strong>（リトライ・ステータスコード判定）はコードで書く。「503 でリトライするか Claude に判断させる」コードが、リクエスト本体を文脈として読んで挙動がランダム化した事件から。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">6</span>
-      <h3>Token budgets are not advisory</h3>
+      <span class="num">2</span>
+      <h3>Rule 6 — Token budgets are not advisory</h3>
       <p><strong>per-task 4,000 tokens / per-session 30,000 tokens</strong>。予算に近づいたら要約してリセット。90 分のデバッグセッションで 40 メッセージ前に却下したアイデアを再提案するループから。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">7</span>
-      <h3>Surface conflicts, don't average them</h3>
+      <span class="num">3</span>
+      <h3>Rule 7 — Surface conflicts, don't average them</h3>
       <p>コードベースに 2 つの矛盾するパターンがあるとき、Claude は両方混ぜようとする。<strong>新しい方・テストされてる方を選んで、他方を cleanup フラグ</strong>。「2 つのエラーハンドリングを混ぜて二重に握りつぶした」事件から。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">8</span>
-      <h3>Read before you write</h3>
+      <span class="num">4</span>
+      <h3>Rule 8 — Read before you write</h3>
       <p>書く前に <strong>exports / 直接呼び出し元 / 共有 utility</strong> を読む。既存の同等関数を読まずに新規追加し、import 順で新しい方が優先、6 ヶ月の「正の値」が消えた事件から。「Looks orthogonal」は最も危険な台詞。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">9</span>
-      <h3>Tests verify intent, not just behavior</h3>
+      <span class="num">5</span>
+      <h3>Rule 9 — Tests verify intent, not just behavior</h3>
       <p>テストは「<strong>なぜ</strong>その挙動が重要か」を encode する。Auth 関数に 12 テスト全 pass、しかし本番で auth が壊れていた事件から。「何かを返す」しか検証していなかった。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">10</span>
-      <h3>Checkpoint after every significant step</h3>
+      <span class="num">6</span>
+      <h3>Rule 10 — Checkpoint after every significant step</h3>
       <p>各ステップ後に <strong>「何をやった / 何が verified / 何が残ってる」</strong> を要約。6 ステップのリファクタリングが step 4 で間違い、気付いた時点で 5, 6 まで破壊状態の上に積まれていた事件から。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">11</span>
-      <h3>Match codebase conventions</h3>
+      <span class="num">7</span>
+      <h3>Rule 11 — Match codebase conventions</h3>
       <p>「自分が好む書き方」より <strong>既存規約に従う</strong>。クラスコンポーネントの codebase に hooks を導入、`componentDidMount` 前提のテスト基盤を破壊した事件から。Conformance &gt; taste。</p>
     </div>
 
     <div class="num-card">
-      <span class="num">12</span>
-      <h3>Fail loud</h3>
+      <span class="num">8</span>
+      <h3>Rule 12 — Fail loud</h3>
       <p>「完了」「pass」を簡単に言わない。DB マイグレーション「成功」報告の裏で、制約違反で <strong>14% のレコードがサイレントスキップ</strong>、11 日後に発覚した事件から。<strong>不確実性は隠さず surface する</strong>。</p>
     </div>
   </div>
