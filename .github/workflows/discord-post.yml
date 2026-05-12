@@ -3,8 +3,13 @@ name: Discord Post (新着記事の自動投稿)
 # discord-snippets/*.txt が新規追加されたら、Discord Webhook で自動投稿する。
 # 既存ファイルの編集は無視（再投稿防止）。
 #
+# Staging / 本番の振り分け:
+#   - discord-snippets/staging/YYYY-MM-DD-XXX.txt → TEST Webhook（ちーけん確認用）
+#   - discord-snippets/YYYY-MM-DD-XXX.txt          → 本番 Webhook（未来AI学院 #ai新着情報）
+#
 # 必要な GitHub Secrets:
-#   - DISCORD_AI_NEWS_WEBHOOK_URL: 投稿先 Discord Webhook URL
+#   - DISCORD_AI_NEWS_WEBHOOK_URL:      本番 Discord Webhook URL
+#   - DISCORD_AI_NEWS_TEST_WEBHOOK_URL: TEST Discord Webhook URL（staging 用）
 
 on:
   push:
@@ -27,16 +32,17 @@ jobs:
         id: changes
         run: |
           set -e
-          # 直前のコミットと比較して「新規追加(A)」された .txt を抽出
-          # 既存ファイルの編集(M)は無視
-          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'discord-snippets/*.txt' || true)
+          # 直前のコミットと比較して「新規追加(A)」された discord-snippets/ 配下の .txt を抽出
+          # 既存ファイルの編集(M)は無視（再投稿防止）
+          # staging/ サブディレクトリも含む
+          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD \
+            | grep -E '^discord-snippets/(staging/)?[^/]+\.txt$' || true)
           if [ -z "$NEW_FILES" ]; then
             echo "新規スニペットなし（編集のみ or push 内容に該当なし）"
           else
             echo "新規スニペット検出:"
             echo "$NEW_FILES"
           fi
-          # 改行をカンマに変換して output に渡す
           {
             echo "files<<EOF"
             echo "$NEW_FILES"
@@ -46,21 +52,34 @@ jobs:
       - name: Post each snippet to Discord
         if: steps.changes.outputs.files != ''
         env:
-          WEBHOOK_URL: ${{ secrets.DISCORD_AI_NEWS_WEBHOOK_URL }}
+          PROD_WEBHOOK_URL: ${{ secrets.DISCORD_AI_NEWS_WEBHOOK_URL }}
+          TEST_WEBHOOK_URL: ${{ secrets.DISCORD_AI_NEWS_TEST_WEBHOOK_URL }}
         run: |
           set -e
-          if [ -z "$WEBHOOK_URL" ]; then
-            echo "❌ Secrets: DISCORD_AI_NEWS_WEBHOOK_URL が未設定です。"
-            exit 1
-          fi
 
-          # 改行区切りで処理
           IFS=$'\n'
           for file in ${{ steps.changes.outputs.files }}; do
             [ -z "$file" ] && continue
             [ ! -f "$file" ] && { echo "⚠️ ファイル消滅: $file"; continue; }
 
-            echo "📤 投稿中: $file"
+            # staging/ 配下なら TEST Webhook、それ以外は本番 Webhook
+            if [[ "$file" == discord-snippets/staging/* ]]; then
+              WEBHOOK_URL="$TEST_WEBHOOK_URL"
+              ENV_LABEL="🧪 TEST"
+              if [ -z "$WEBHOOK_URL" ]; then
+                echo "❌ DISCORD_AI_NEWS_TEST_WEBHOOK_URL が未設定です（staging 投稿に必須）。"
+                exit 1
+              fi
+            else
+              WEBHOOK_URL="$PROD_WEBHOOK_URL"
+              ENV_LABEL="🚀 PROD"
+              if [ -z "$WEBHOOK_URL" ]; then
+                echo "❌ DISCORD_AI_NEWS_WEBHOOK_URL が未設定です（本番投稿に必須）。"
+                exit 1
+              fi
+            fi
+
+            echo "📤 $ENV_LABEL 投稿中: $file"
 
             # # で始まる行（コメント）を除去 + 前後の空行を整える
             CONTENT=$(grep -v '^#' "$file" | sed -e '/./,$!d' | sed -e ':a' -e '/^\n*$/{$d;N;ba' -e '}')
@@ -73,10 +92,8 @@ jobs:
             fi
             echo "   文字数: $LEN"
 
-            # JSON ペイロード作成
             PAYLOAD=$(jq -n --arg content "$CONTENT" '{content: $content}')
 
-            # Webhook 投稿（HTTP ステータス確認）
             HTTP_CODE=$(curl -sS -o /tmp/discord_response.json -w "%{http_code}" \
               -X POST \
               -H "Content-Type: application/json" \
@@ -86,14 +103,13 @@ jobs:
 
             if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
               MSG_ID=$(jq -r '.id // "unknown"' /tmp/discord_response.json)
-              echo "   ✅ 投稿完了 (message_id: $MSG_ID)"
+              echo "   ✅ $ENV_LABEL 投稿完了 (message_id: $MSG_ID)"
             else
               echo "   ❌ HTTP $HTTP_CODE"
               cat /tmp/discord_response.json
               exit 1
             fi
 
-            # 連続投稿防止（rate limit 回避）
             sleep 2
           done
           echo ""

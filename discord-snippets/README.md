@@ -2,14 +2,23 @@
 
 ai-news-effect の記事を Discord に**自動投稿**するためのテキストファイル置き場。
 
+## 2 段階運用（Staging → 本番）
+
+| 配置先 | 投稿先 | 用途 |
+|--------|--------|------|
+| `discord-snippets/staging/YYYY-MM-DD-XXX.txt` | 🧪 **TEST Webhook**（ちーけん専用 Discord）| 本番投稿前の最終確認 |
+| `discord-snippets/YYYY-MM-DD-XXX.txt`（直下） | 🚀 **本番 Webhook**（未来AI学院 #ai新着情報）| 受講生に届ける |
+
 ## 仕組み
 
 1. 新しい記事を `posts/` に作成 + Cloudflare Pages デプロイ
-2. このディレクトリに `YYYY-MM-DD-記事キー.txt` を**新規追加**
-3. `git push` すると `.github/workflows/discord-post.yml` が起動
-4. Discord Webhook で自動投稿される
+2. **まず `discord-snippets/staging/YYYY-MM-DD-XXX.txt`** を新規追加
+3. `git push` → GitHub Actions が **TEST Discord** に投稿
+4. ちーけんが TEST サーバーで内容・OGP カードを確認
+5. OK なら **`discord-snippets/YYYY-MM-DD-XXX.txt`（直下）** を新規追加（中身は staging と同じで OK）
+6. `git push` → GitHub Actions が **本番 #ai新着情報** に投稿
 
-**重要**: 既存ファイルの編集は無視されます（再投稿防止）。新規追加のみが投稿対象。
+**重要**: 既存ファイルの編集は無視されます（再投稿防止）。新規追加のみが投稿対象。staging のファイルを後で消す必要はありません（履歴として残してよい）。
 
 ## ファイル名規則
 
@@ -43,7 +52,8 @@ posts/ 配下の HTML ファイルと1対1対応させる。
 
 リポジトリ Settings → Secrets and variables → Actions に登録:
 
-- `DISCORD_AI_NEWS_WEBHOOK_URL` - 投稿先 Discord Webhook URL
+- `DISCORD_AI_NEWS_WEBHOOK_URL` - 本番 Discord Webhook URL（未来AI学院 #ai新着情報）
+- `DISCORD_AI_NEWS_TEST_WEBHOOK_URL` - TEST Discord Webhook URL（ちーけん専用 Discord、staging 用）
 
 ## 文体ルール
 
