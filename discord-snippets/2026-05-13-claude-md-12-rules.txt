@@ -1,0 +1,12 @@
+# Discord 投稿スニペット（第5記事: CLAUDE.md 12 ルール）
+# このファイルは新規追加すると GitHub Actions が自動投稿します。
+# # で始まる行はコメントとして除去されます。
+
+# 📰 Karpathy の 4 CLAUDE.md ルールに 8 追加した「12 ルール版」— ミス率 41% → 3% の実証データ
+
+> 元記事: https://x.com/mnilax/status/2053116311132155938
+> 著者: @mnilax / 公開日: 2026-05-09
+
+Andrej Karpathy の Claude 批判から生まれた **4 ルール CLAUDE.md** は GitHub **120k スター**を獲得。@mnilax が **30 codebase × 6 週間**でテストし **8 ルール追加**、ミス率を **41% → 3%** に。「CLAUDE.md は wishlist ではなく **behavioral contract**」「**200 行が限界**」「**"Be careful" は意味なし、imperative rule のみ効く**」など、Claude Code を本気で使う人には刺さる実証データ集。
+
+詳細はこちら 👉 https://ai-news-effect.pages.dev/posts/2026-05-13-claude-md-12-rules.html
