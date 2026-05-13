@@ -97,7 +97,10 @@ jobs:
             fi
             echo "   文字数: $LEN"
 
-            PAYLOAD=$(jq -n --arg content "$CONTENT" '{content: $content}')
+            # Bot 名を本番/staging で区別（毎朝5:30 のキュレーション AI News Bot と
+            # HTML 記事投稿を Discord 上で見分けやすくするため username を上書き）
+            BOT_NAME="AI News Bot (HTML)"
+            PAYLOAD=$(jq -n --arg content "$CONTENT" --arg username "$BOT_NAME" '{content: $content, username: $username}')
 
             HTTP_CODE=$(curl -sS -o /tmp/discord_response.json -w "%{http_code}" \
               -X POST \
