@@ -1,0 +1,12 @@
+# Discord 投稿スニペット（第3記事: Skills vs SubAgent）
+# このファイルは新規追加すると GitHub Actions が自動投稿します。
+# # で始まる行はコメントとして除去されます。
+
+# 📰 Skills と SubAgent、混ぜないで使う。Claude Code / Codex の役割分担5原則
+
+> 元記事: https://x.com/kawai_design/status/2052904289564258588
+> 著者: @kawai_design / 公開日: 2026-05-01
+
+Claude Code・Codex の **Skills / SubAgent / CLAUDE.md / MCP / Hooks** をどう使い分けるか。片方だけ使う・両方ごちゃ混ぜに使う、のどちらも運用が重くなる。**@kawai_design 氏**の整理を、**5つの仕組みの比較表とチェックリスト**で噛み砕いた版。
+
+詳細はこちら 👉 https://ai-news-effect.pages.dev/posts/2026-05-10-skills-vs-subagent.html
