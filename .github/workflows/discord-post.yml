@@ -68,9 +68,11 @@ jobs:
             [ ! -f "$file" ] && { echo "⚠️ ファイル消滅: $file"; continue; }
 
             # staging/ 配下なら TEST Webhook、それ以外は本番 Webhook
+            # Bot 名も staging（テスト）/ 本番（AI博士）で区別する
             if [[ "$file" == discord-snippets/staging/* ]]; then
               WEBHOOK_URL="$TEST_WEBHOOK_URL"
               ENV_LABEL="🧪 TEST"
+              BOT_NAME="AI博士（テスト）"
               if [ -z "$WEBHOOK_URL" ]; then
                 echo "❌ DISCORD_AI_NEWS_TEST_WEBHOOK_URL が未設定です（staging 投稿に必須）。"
                 exit 1
@@ -78,6 +80,7 @@ jobs:
             else
               WEBHOOK_URL="$PROD_WEBHOOK_URL"
               ENV_LABEL="🚀 PROD"
+              BOT_NAME="AI博士"
               if [ -z "$WEBHOOK_URL" ]; then
                 echo "❌ DISCORD_AI_NEWS_WEBHOOK_URL が未設定です（本番投稿に必須）。"
                 exit 1
@@ -97,9 +100,7 @@ jobs:
             fi
             echo "   文字数: $LEN"
 
-            # Bot 名を本番/staging で区別（毎朝5:30 のキュレーション AI News Bot と
-            # HTML 記事投稿を Discord 上で見分けやすくするため username を上書き）
-            BOT_NAME="AI News Bot (HTML)"
+            # username オーバーライド（BOT_NAME は環境分岐で設定済み）
             PAYLOAD=$(jq -n --arg content "$CONTENT" --arg username "$BOT_NAME" '{content: $content, username: $username}')
 
             HTTP_CODE=$(curl -sS -o /tmp/discord_response.json -w "%{http_code}" \
