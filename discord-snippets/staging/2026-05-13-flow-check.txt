@@ -1,8 +1,0 @@
-# フロー動作確認用スニペット（後で削除）
-# DISCORD_AI_NEWS_TEST_WEBHOOK_URL（ちーけんサーバー #test）に投稿されることを確認
-
-🧪 staging フロー動作確認テスト
-
-ai-news-effect の GitHub Actions が staging スニペットを Webhook 経由で #test に正しく投稿できるかの確認です。Bot 名が「AI News Bot (HTML)」になっていれば username オーバーライドも動作しています。
-
-このメッセージが届いたら staging フロー OK。確認後 git rm で削除予定。
