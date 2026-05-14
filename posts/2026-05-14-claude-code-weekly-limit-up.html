@@ -41,10 +41,19 @@
   color: var(--text-muted);
   margin: 0 0 24px;
 }
+/* ラベルを左カラムに外出しする 2 列グリッド（バーの上に黒文字を重ねない） */
+.timing-grid {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px 14px;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .timing-grid { grid-template-columns: 72px 1fr; gap: 8px 10px; }
+}
 .timing-axis {
   position: relative;
   height: 18px;
-  margin: 0 0 14px;
   font-size: 11px;
   color: var(--text-muted);
   letter-spacing: 0.02em;
@@ -55,24 +64,19 @@
   transform: translateX(-50%);
   white-space: nowrap;
 }
+.timing-row-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: right;
+}
 .timing-row {
   position: relative;
   height: 38px;
-  margin: 0 0 10px;
   background: var(--bg-deeper);
   border-radius: 6px;
   border: 1px solid var(--border);
-}
-.timing-row .timing-label {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-weight: 600;
-  z-index: 2;
-  pointer-events: none;
 }
 .timing-bar {
   position: absolute;
@@ -199,29 +203,32 @@
     <h3>緩和期間 ⟷ 上級コース期間のオーバーラップ</h3>
     <p class="timing-sub">横軸: 2026-05-06 〜 2026-07-20（76 日間 = 100%）</p>
 
-    <div class="timing-axis">
-      <span style="left: 0%;">5/6</span>
-      <span style="left: 15.8%;">5/18</span>
-      <span style="left: 50%;">6/15</span>
-      <span style="left: 88.2%;">7/13</span>
-      <span style="left: 100%;">7/20</span>
-    </div>
+    <div class="timing-grid">
+      <div></div>
+      <div class="timing-axis">
+        <span style="left: 0%;">5/6</span>
+        <span style="left: 15.8%;">5/18</span>
+        <span style="left: 50%;">6/15</span>
+        <span style="left: 88.2%;">7/13</span>
+        <span style="left: 100%;">7/20</span>
+      </div>
 
-    <div class="timing-row">
-      <span class="timing-label">緩和期間</span>
-      <div class="timing-bar bar-relief" style="left: 0%; right: 11.8%;">5 時間 2 倍 + ピーク撤廃 / 週次 50% 増</div>
-      <span class="timing-marker" style="left: 88.2%;">
-        <span class="timing-marker-label">緩和終了</span>
-      </span>
-    </div>
+      <div class="timing-row-label">緩和期間</div>
+      <div class="timing-row">
+        <div class="timing-bar bar-relief" style="left: 0%; right: 11.8%;">5 時間 2 倍 + ピーク撤廃 / 週次 50% 増</div>
+        <span class="timing-marker" style="left: 88.2%;">
+          <span class="timing-marker-label">緩和終了</span>
+        </span>
+      </div>
 
-    <div class="timing-row">
-      <span class="timing-label">上級コース</span>
-      <div class="timing-bar bar-course" style="left: 15.8%; right: 0%;">未来AI学院 上級コース（63 日間）</div>
-      <div class="timing-bar bar-final" style="left: 90.8%; right: 0%;">最終週</div>
-      <span class="timing-marker" style="left: 15.8%;">
-        <span class="timing-marker-label">5/18 開始</span>
-      </span>
+      <div class="timing-row-label">上級コース</div>
+      <div class="timing-row">
+        <div class="timing-bar bar-course" style="left: 15.8%; right: 0%;">未来AI学院 上級コース（63 日間）</div>
+        <div class="timing-bar bar-final" style="left: 90.8%; right: 0%;">最終週</div>
+        <span class="timing-marker" style="left: 15.8%;">
+          <span class="timing-marker-label">5/18 開始</span>
+        </span>
+      </div>
     </div>
 
     <div class="timing-legend">
