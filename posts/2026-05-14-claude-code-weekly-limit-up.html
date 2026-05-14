@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Claude Code の週次リミットが 50% 増（7/13 まで）— 5月だけで 3 段階の緩和 | ai-news-effect</title>
+<meta name="description" content="2026年5月、Anthropic が Claude Code の利用制限を3段階で緩和。5/6 に5時間制限を2倍化＋ピークタイム制限撤廃、5/13 に週次（7d）制限を50%増。7/13 までの期間限定。未来AI学院 上級コース（5/18〜7/20）の導入期と演習期が緩和期間に丸ごと重なる。">
+<meta property="og:title" content="Claude Code の週次リミットが 50% 増（7/13 まで）— 5月だけで 3 段階の緩和">
+<meta property="og:description" content="5/6 の5時間2倍化＋ピーク撤廃に続き、5/13 で週次が 50% 増。未来AI学院 上級コース（5/18〜7/20）の導入期と演習期が緩和期間とほぼ完全に重なるタイミング。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ai-news-effect.pages.dev/posts/2026-05-14-claude-code-weekly-limit-up.html">
+<meta property="og:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-14-claude-code-weekly-limit-up.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:site_name" content="ai-news-effect">
+<meta property="article:published_time" content="2026-05-14">
+<meta property="article:author" content="@ClaudeDevs (Anthropic)">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ai-news-effect.pages.dev/assets/images/2026-05-14-claude-code-weekly-limit-up.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+<style>
+/* タイミング比較ガントチャート（記事固有・5/6 〜 7/20 = 75日を100%とした座標） */
+.timing-chart {
+  margin: 32px 0 8px;
+  padding: 24px 24px 20px;
+  background: var(--bg-elev);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.timing-chart h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+.timing-chart .timing-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+.timing-axis {
+  position: relative;
+  height: 18px;
+  margin: 0 0 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+.timing-axis span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.timing-row {
+  position: relative;
+  height: 38px;
+  margin: 0 0 10px;
+  background: var(--bg-deeper);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.timing-row .timing-label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  z-index: 2;
+  pointer-events: none;
+}
+.timing-bar {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  white-space: nowrap;
+}
+.timing-bar.bar-relief {
+  background: var(--accent);
+}
+.timing-bar.bar-course {
+  background: #6b7280;
+}
+.timing-bar.bar-final {
+  background: #b45309;
+}
+.timing-marker {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  width: 0;
+  border-left: 1.5px dashed rgba(26, 26, 26, 0.32);
+  z-index: 3;
+}
+.timing-marker-label {
+  position: absolute;
+  top: -22px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+  white-space: nowrap;
+  background: var(--bg-elev);
+  padding: 2px 6px;
+  border-radius: 3px;
+  z-index: 4;
+}
+.timing-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.timing-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.timing-legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+.timing-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+@media (max-width: 640px) {
+  .timing-stats { grid-template-columns: 1fr; }
+}
+.timing-stat {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.timing-stat-value {
+  font-family: "Noto Serif JP", Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.timing-stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+<main class="container">
+  <p class="breadcrumb"><a href="/">← 一覧に戻る</a></p>
+
+  <span class="eyebrow">運営情報 / Claude Code 利用制限</span>
+  <h1>Claude Code の週次リミットが 50% 増（7/13 まで）<br>— 5 月だけで 3 段階の緩和</h1>
+
+  <div class="meta">
+    <strong style="background:none; font-weight:700;">一次情報:</strong> <a href="https://www.anthropic.com/news/higher-limits-spacex" target="_blank" rel="noopener">anthropic.com/news/higher-limits-spacex</a><br>
+    <strong style="background:none; font-weight:700;">@ClaudeDevs 告知:</strong> <a href="https://x.com/ClaudeDevs/status/2054639777685934564" target="_blank" rel="noopener">x.com/ClaudeDevs/status/2054639777685934564</a> &nbsp;/&nbsp; <strong style="background:none; font-weight:700;">公開日:</strong> 2026-05-13
+  </div>
+
+  <p class="lead">
+    Anthropic が 5 月だけで <strong>3 段階の利用制限緩和</strong>を実施した。背景には <strong>SpaceX Colossus 1 データセンター</strong>のコンピュートキャパシティ獲得がある（220,000 NVIDIA GPU / 300MW 超）。<strong>5/6 に 5 時間制限を 2 倍化＋ピークタイム制限を撤廃</strong>、続いて <strong>5/13 に週次（7d）制限を 50% 増</strong>。週次の方は <strong>7/13 までの期間限定</strong>。
+  </p>
+
+  <p class="lead">
+    特筆すべきは、<strong>未来AI学院 上級コース（2026-05-18 〜 2026-07-20）の開始タイミングと、この緩和期間がほぼ完全に重なる</strong>点。これから Claude Code を本格的に触り始める受講生にとっては、最もリミットに詰まりやすい <strong>導入期と演習期が緩和期間内に丸ごと収まる</strong>。
+  </p>
+
+  <div class="hero-img-wrap">
+    <img src="/assets/images/2026-05-14-claude-code-weekly-limit-up.png" alt="Claude Code の 5 月 3 段階緩和と未来AI学院 上級コース期間のタイミング一致を示す手書きノート風インフォグラフィック" class="hero-img">
+  </div>
+
+  <h2>1. タイミングを 1 枚で見る</h2>
+
+  <p>5/6（最初の緩和発表）から 7/20（上級コース最終日）までの <strong>76 日間</strong>を 100% とした座標で、緩和期間とスクール期間を重ねた。</p>
+
+  <div class="timing-chart">
+    <h3>緩和期間 ⟷ 上級コース期間のオーバーラップ</h3>
+    <p class="timing-sub">横軸: 2026-05-06 〜 2026-07-20（76 日間 = 100%）</p>
+
+    <div class="timing-axis">
+      <span style="left: 0%;">5/6</span>
+      <span style="left: 15.8%;">5/18</span>
+      <span style="left: 50%;">6/15</span>
+      <span style="left: 88.2%;">7/13</span>
+      <span style="left: 100%;">7/20</span>
+    </div>
+
+    <div class="timing-row">
+      <span class="timing-label">緩和期間</span>
+      <div class="timing-bar bar-relief" style="left: 0%; right: 11.8%;">5 時間 2 倍 + ピーク撤廃 / 週次 50% 増</div>
+      <span class="timing-marker" style="left: 88.2%;">
+        <span class="timing-marker-label">緩和終了</span>
+      </span>
+    </div>
+
+    <div class="timing-row">
+      <span class="timing-label">上級コース</span>
+      <div class="timing-bar bar-course" style="left: 15.8%; right: 0%;">未来AI学院 上級コース（63 日間）</div>
+      <div class="timing-bar bar-final" style="left: 90.8%; right: 0%;">最終週</div>
+      <span class="timing-marker" style="left: 15.8%;">
+        <span class="timing-marker-label">5/18 開始</span>
+      </span>
+    </div>
+
+    <div class="timing-legend">
+      <span class="timing-legend-item"><span class="timing-legend-swatch" style="background: var(--accent);"></span>緩和期間（5/6 〜 7/13）</span>
+      <span class="timing-legend-item"><span class="timing-legend-swatch" style="background: #6b7280;"></span>上級コース（5/18 〜 7/20）</span>
+      <span class="timing-legend-item"><span class="timing-legend-swatch" style="background: #b45309;"></span>最終週: 通常モードに復帰（7/14 〜 7/20）</span>
+    </div>
+
+    <div class="timing-stats">
+      <div class="timing-stat">
+        <div class="timing-stat-value">56 日</div>
+        <div class="timing-stat-label">緩和期間とコース期間の<br>オーバーラップ</div>
+      </div>
+      <div class="timing-stat">
+        <div class="timing-stat-value">89%</div>
+        <div class="timing-stat-label">コース期間のうち<br>緩和期間にあたる割合</div>
+      </div>
+      <div class="timing-stat">
+        <div class="timing-stat-value">7 日</div>
+        <div class="timing-stat-label">最終週のみ通常モード<br>（7/14 〜 7/20）</div>
+      </div>
+    </div>
+  </div>
+
+  <p>導入期（環境構築 → 最初の演習）と中盤の実装演習がすべて緩和期間内に収まる構造になっている。<strong>最後の 1 週間（7/14 〜 7/20）だけ通常モードに戻る</strong>ため、ここに大型の最終課題を当てている場合は運用に注意が必要。</p>
+
+  <h2>2. 3 段階の中身</h2>
+
+  <div class="compare-table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>変更内容</th>
+        <th>対象</th>
+        <th>期間</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>5/6</strong></td>
+        <td>5 時間制限を <strong>2 倍</strong>に</td>
+        <td>Pro / Max / Team / 座席ベース Enterprise</td>
+        <td>恒久（明示終了日なし）</td>
+      </tr>
+      <tr>
+        <td><strong>5/6</strong></td>
+        <td>ピークタイムの制限削減を <strong>撤廃</strong></td>
+        <td>Pro / Max</td>
+        <td>恒久（明示終了日なし）</td>
+      </tr>
+      <tr>
+        <td><strong>5/13</strong></td>
+        <td>週次（7d）制限を <strong>50% 増</strong></td>
+        <td>Pro / Max / Team / 座席ベース Enterprise</td>
+        <td><strong>7/13 まで（期間限定）</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>3 つを足し合わせると、Pro プランの体感が大きく変わる。<strong>5 時間枠の倍増 + ピーク減衰の撤廃 + 週次枠の 1.5 倍</strong>が同時に効くからだ。これまで「Pro だと Claude Code は厳しい」と感じていた人にとって、最低でも 7/13 までは別物になる。</p>
+
+  <h2>3. 対象プラン早見表</h2>
+
+  <div class="compare-table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>プラン</th>
+        <th>5 時間 2 倍</th>
+        <th>ピーク撤廃</th>
+        <th>週次 50% 増</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Pro</strong></td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td><strong>Max</strong></td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td><strong>Team</strong></td>
+        <td>✓</td>
+        <td>—</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td><strong>Enterprise（座席ベース）</strong></td>
+        <td>✓</td>
+        <td>—</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Free</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Free は対象外。<strong>有料プランを契約しているユーザーが対象</strong>。なお、Anthropic は段階的ロールアウトを採用しているため、「currently available」と書かれていても自分のアカウントに反映されるまで <strong>数時間から数日</strong>かかる場合がある。</p>
+
+  <h2>4. プロプランでの実用感</h2>
+
+  <p>Pro プランで Claude Code を使う上での現実的な運用方針が、今回の緩和でだいぶ変わる。</p>
+
+  <div class="num-grid">
+    <div class="num-card">
+      <span class="num">1</span>
+      <h3>Sonnet 中心が依然オススメ</h3>
+      <p>枠が増えても <strong>Opus はトークン消費が桁違いに大きい</strong>。Pro プランで Opus を常用するとすぐ詰まる。Sonnet 4.6 は十分高品質で、演習レベルなら品質的に問題ない。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">2</span>
+      <h3>Opus を使う局面を絞る</h3>
+      <p>コードレビュー・要件定義の壁打ち・設計の意思決定など <strong>「考えさせる作業」だけ Opus</strong>。実装の手数を稼ぐ作業は Sonnet。これが Pro プランで緩和期間を最大限活かす実用配分。</p>
+    </div>
+
+    <div class="num-card">
+      <span class="num">3</span>
+      <h3>Plan モードで設計を固める</h3>
+      <p>緩和期間中でも <strong>無駄なループは消耗が早い</strong>。Plan モード（Shift+Tab）で設計を固めてから実装に入る運用は、緩和の有無にかかわらず効く。</p>
+    </div>
+  </div>
+
+  <h2>5. 注意点</h2>
+
+  <div class="checklist">
+    <h3>緩和期間中・期間後の運用で気をつけること</h3>
+    <ul>
+      <li><strong>7/13 で週次の 50% 増は終わる</strong> — 「ずっと緩和される」と誤解しない。コース最終週（7/14 〜 7/20）は通常モードに戻る前提で運用設計する</li>
+      <li><strong>5 時間 2 倍 と ピーク撤廃 は恒久措置</strong> — 公式記事に終了日の明示がない。週次の方だけが期間限定。</li>
+      <li><strong>段階的ロールアウトで反映に時差</strong> — 来週セットアップする受講生が「告知では緩和済みのはずなのに増えてない」と感じる可能性。数日待ってから判断する</li>
+      <li><strong>無償プランは対象外</strong> — 緩和は有料プランのみ。Free を使っている人は変化なし</li>
+      <li><strong>使いすぎ防止の自覚はそのまま</strong> — 枠が広がっても、無駄ループや巨大 PR の連投はコスト感覚として変わらない</li>
+    </ul>
+  </div>
+
+  <h2>6. なぜこのタイミングか</h2>
+
+  <p>5 月 1 ヶ月で 3 段階の緩和が立て続けに行われた背景には、Anthropic と SpaceX の <strong>Colossus 1 データセンター</strong>を巡る取引がある。300MW 超のキャパシティと 220,000 以上の NVIDIA GPU を月内に確保したことで、推論側の余力が一気に増えた。Codex などの競合と並ぶレート制限水準にすることが、今回の <strong>「週次 50% 増・7/13 まで」</strong>の意図と読める。</p>
+
+  <p>7/13 という期限は、おそらく <strong>追加キャパシティの恒久組み込み or 次の判断ポイント</strong>のマイルストーン。期限が来た時点で、恒久化されるか、別の調整が入るか、通常モードに戻るかは現時点では未公表。</p>
+
+  <div class="callout">
+    <span class="callout-label">💡 ちーけん的補足</span>
+    <p>このタイミングは、未来AI学院 上級コース（5/18 開始 / 7/20 終了）で <strong>Claude Code を本格的に触り始める受講生にとってかなり追い風</strong>。導入期（環境構築 / 初めての /interview / 最初の演習）と中盤の実装演習がすべて緩和期間内に収まる。一番リミットに詰まりやすい時期に枠が広いのは、本気で学んでもらう環境としては理想的。</p>
+    <p>受講生向けに伝えておきたいのは <strong>3 点</strong>。①「Pro プランでも 7/13 までは別物の使い心地になる」。②「ただし Opus は枠があっても消費が早いので Sonnet 中心、Opus は判断系に絞る」。③「コース最終週（7/14 〜 7/20）は通常モードに戻るので、最終課題を組む人は Plan モードで設計を固めてからにする」。これだけ意識すれば、緩和期間の恩恵をフルに受けつつ、最終週の戻りで困らない。</p>
+    <p>もう一つ、これは恒久ではなく <strong>7/13 までの期間限定</strong>。なので「これからは Pro でも Claude Code で十分」と長期計画を立てるのではなく、<strong>「夏前まで Claude Code を本気で試せる窓口が開いている」</strong>と捉えるのが正確。次の判断ポイントが来たら、また情報を整理して共有する。</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="conclusion">
+    <h3>結びの一言</h3>
+    <p>5 月の 3 段階緩和は、<strong>未来AI学院 上級コースの開始 (5/18) からコース後半 (7/13) までの 56 日間 / コース期間の 89%</strong> を緩和期間でカバーする構造になっている。受講生にとっては、Claude Code を本格的に体に染み込ませる時期がそのまま追い風になる珍しいタイミング。<br><br>ただし <strong>7/13 で週次の 50% 増は終わる</strong>。コース最終週は通常モードに戻るので、最終課題を当てている人は Plan モードで設計を先に固めてから一気に書く運用に切り替えると安全。<strong>緩和を「これからずっと」と捉えるのではなく、「夏前までの試走窓口」</strong>として最大限に使い倒すのが正解。</p>
+  </div>
+
+  <div class="related">
+    <h3>関連リンク</h3>
+    <ul>
+      <li>Anthropic 公式: <a href="https://www.anthropic.com/news/higher-limits-spacex" target="_blank" rel="noopener">Higher usage limits for Claude and a compute deal with SpaceX</a></li>
+      <li>@ClaudeDevs 告知（週次 50% 増）: <a href="https://x.com/ClaudeDevs/status/2054639777685934564" target="_blank" rel="noopener">x.com/ClaudeDevs/status/2054639777685934564</a></li>
+      <li>Hacker News スレッド: <a href="https://news.ycombinator.com/item?id=48126429" target="_blank" rel="noopener">Claude Code weekly limits increasing 50% till July 13</a></li>
+      <li>Claude 利用制限の公式ヘルプ: <a href="https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work" target="_blank" rel="noopener">support.claude.com/...how-do-usage-and-length-limits-work</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <a href="/">ai-news-effect</a>
+  </footer>
+</main>
+</body>
+</html>
