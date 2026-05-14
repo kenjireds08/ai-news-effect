@@ -54,6 +54,60 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
+      # Cloudflare Pages のデプロイ完了を待つ（OG画像が間に合うように）
+      # 2026-05-14 事故: push 直後に Discord 投稿したら og:image がまだ 404 で、
+      # Discord が「画像なし」状態でキャッシュしてしまい、後から修正不可になった。
+      # 90 秒待てば Cloudflare Pages のデプロイは通常完了する。
+      - name: Wait for Cloudflare Pages deployment
+        if: steps.changes.outputs.files != ''
+        run: |
+          echo "⏳ Cloudflare Pages のデプロイ完了を待機（90秒）..."
+          sleep 90
+          echo "✅ 待機完了"
+
+      # snippet 内の HTML URL と og:image URL の到達性を確認（best effort）
+      # 投稿前に 404 を検出できれば、Discord キャッシュ事故を未然に防げる
+      - name: Verify HTML and og:image are reachable
+        if: steps.changes.outputs.files != ''
+        run: |
+          set +e  # 検証失敗で workflow 全体を落とさない（warning にとどめる）
+          IFS=$'\n'
+          for file in ${{ steps.changes.outputs.files }}; do
+            [ -z "$file" ] && continue
+            [ ! -f "$file" ] && continue
+
+            HTML_URL=$(grep -oE 'https://ai-news-effect\.pages\.dev/[^ )]+\.html[^ )]*' "$file" | head -1)
+            if [ -z "$HTML_URL" ]; then
+              echo "ℹ️  $file: HTML URL なし（OG 検証スキップ）"
+              continue
+            fi
+
+            HTML_STATUS=$(curl -sLI "$HTML_URL" -o /dev/null -w "%{http_code}")
+            echo "📄 HTML $HTML_STATUS: $HTML_URL"
+            if [ "$HTML_STATUS" != "200" ]; then
+              echo "   ⚠️  HTML が 200 を返しません。Discord プレビューに影響する可能性。"
+            fi
+
+            # og:image URL を HTML から抽出して 200 確認
+            OG_URL=$(curl -sL "$HTML_URL" \
+              | grep -oE 'property="og:image"[[:space:]]+content="[^"]+"' \
+              | head -1 \
+              | sed 's/.*content="\([^"]*\)".*/\1/')
+            if [ -n "$OG_URL" ]; then
+              OG_STATUS=$(curl -sLI "$OG_URL" -o /dev/null -w "%{http_code}")
+              if [ "$OG_STATUS" = "200" ]; then
+                echo "🖼️  og:image OK ($OG_STATUS): $OG_URL"
+              else
+                echo "   ⚠️  og:image $OG_STATUS: $OG_URL"
+                echo "      Discord プレビューが「画像なし」または旧画像になる可能性。"
+                echo "      Cloudflare Pages のデプロイ完了を確認後、別 URL（?v=N）で再投稿を検討。"
+              fi
+            else
+              echo "   ⚠️  og:image メタタグが HTML に見つかりません: $HTML_URL"
+            fi
+          done
+          set -e
+
       - name: Post each snippet to Discord
         if: steps.changes.outputs.files != ''
         env:
